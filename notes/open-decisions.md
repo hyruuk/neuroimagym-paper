@@ -29,7 +29,9 @@ Also, for a PDF built on GitHub at every push: the `gh` token here has no `workf
 
 ## 3. The rename and the documentation (for you, then tomov)
 
-- **PR 0, removing the session editor**, needs tomov's agreement before anything else.
+- **PR 0, removing the session editor**, needs tomov's agreement before anything else. It also removes what only the editor used: the session script's reader and writer (`fmri-ses` stays), saving a curriculum back with its includes (`save_curriculum` and helpers in `config/curriculum.py`, core), the keys table of `widgets.py`. Say if you would rather keep any of it.
+- **Pushing PR 1 needs the `workflow` scope**: it edits `.github/workflows/tests.yml` (ruff no longer names `fmri_play.py`, which moved) and `docker-build.yml` (the image's name). `gh auth refresh -h github.com -s workflow`, in a browser, once.
+- **Run numbers in the committed session scripts** count across tasks (`--run 1` to `6` for six different games), while the removed editor numbered runs per task. BIDS accepts both; the documentation needs one rule. Recommendation: per task, as BIDS intends (`run-` counts repetitions of one task), and fix the examples in the docs PR.
 - **`parse-logs`** is the name you gave for `bids-from-logs`; tomov may want another.
 - **Recorded names**: the plan changes the log marker to `neuroimagym-log` (readers accept both) and the default LSL stream name to `neuroimagym` (rigs made with the form keep the name they wrote). Both are yours and tomov's call; the alternative is to keep `fmri-gym-log` and `fmri_gym` for continuity.
 - **`--subject` defaults to `sub-test`** when left out: a silent default that files data under the wrong participant. The plan proposes a separate small PR to make it required.
