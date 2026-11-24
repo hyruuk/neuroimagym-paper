@@ -15,7 +15,7 @@ The methods paper for NeuroimaGym (the software `neuroimagym`, formerly fmri-gym
 
 ## Git
 
-- `origin` is GitHub (`main`), `overleaf` is Overleaf (`master`). The sync routine is in `README.md`: fetch both, merge both into `main`, push both.
+- `origin` is GitHub, `overleaf` is Overleaf, and both have one branch that counts, `main` (Overleaf has no other). The sync routine is in `README.md`: fetch both, merge both into `main`, push both.
 - Never force-push, rebase pushed commits, or rewrite history on either remote.
 - Feature branches stay on GitHub; only `main` goes to Overleaf.
 - Before resolving a conflict in `.tex` content, stop and ask the user.

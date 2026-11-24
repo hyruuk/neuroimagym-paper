@@ -2,25 +2,15 @@
 
 Decisions that need a person, gathered since 2026-11-24. Each one has a recommendation, so that "yes" is an answer.
 
-## 1. Overleaf (needs you: your project and your token)
+## 1. Overleaf: connected (2026-11-24)
 
-The GitHub side is ready. To connect Overleaf without a conflict on `main.tex`:
+The project was made on Overleaf from the zip of 61efcf8, and its history joined `main` in 9a9683b. Overleaf's git bridge names its one branch `main`, so `main` goes to `main` on both remotes; the routine is in `README.md`.
 
-1. On Overleaf: **New Project → Upload Project**, with `~/Desktop/neuroimagym-paper.zip`. It is `git archive` of `main` at the commit named in `progress-log.md` (the latest entry), so Overleaf starts from exactly what GitHub has. (A blank project also works, but its template `main.tex` would conflict with ours on the first merge, and that is a `.tex` conflict you asked to decide yourself.)
-2. Give me the project ID (the last part of the project's URL).
-3. I add the remote and the branch mapping: `git remote add overleaf https://git.overleaf.com/<ID>` and `git config remote.overleaf.push refs/heads/main:refs/heads/master`.
-4. In your own terminal (not through me), run `git -C ~/GitHub/humain/neuroimagym-paper fetch overleaf` once, and answer `git` as the username and your Overleaf Git token as the password (Overleaf: Account settings → Git integration). The keychain keeps it (`osxkeychain` is the credential helper of Homebrew's git here); it never goes into a URL or a file.
-5. I run the first sync. If `main` has moved since the zip, I join Overleaf's history at the zip's commit first (a branch at that commit, merged with `--allow-unrelated-histories overleaf/master`: the same files on both sides, so no conflict), then merge that branch into `main`, which has only our own changes since; then I push to both.
-
-Also, for a PDF built on GitHub at every push: the `gh` token here has no `workflow` scope, so GitHub refuses any commit that adds a file under `.github/workflows/`. Run `gh auth refresh -h github.com -s workflow` (it opens a browser), and I move `notes/pdf-workflow.yml` into place. Optional: Overleaf compiles the paper anyway.
+Still optional, for a PDF built on GitHub at every push: the `gh` token here has no `workflow` scope, so GitHub refuses any commit that adds a file under `.github/workflows/`. Run `gh auth refresh -h github.com -s workflow` (it opens a browser), and I move `notes/pdf-workflow.yml` into place. Overleaf compiles the paper anyway.
 
 ## 2. The paper
 
-- **Title** (you asked for NeuroimaGym and a more technical one). In `main.tex` now: "NeuroimaGym: Gymnasium environments as fMRI, MEG and EEG tasks, with frame-accurate synchronisation and bit-exact replay". Alternatives:
-  - "NeuroimaGym: step-based environments with per-flip timing and bit-exact replay for fMRI, MEG and EEG" (names the framework's unit rather than the interface);
-  - "NeuroimaGym: mapping engine time to acquisition time for interactive tasks in fMRI, MEG and EEG" (names the framework's contribution);
-  - "NeuroimaGym: frame-accurate, replayable Gymnasium environments for neuroimaging with people and artificial agents" (keeps the agents in).
-  Recommendation: the one in `main.tex`; it says what the software is and the two guarantees a reviewer will test.
+- **Title**: yours, 2026-11-24: "NeuroimaGym: Gymnasium environments as neuroimaging tasks for neuro-AI".
 - **Authors** (yes for now, you said): Yann Harel, Momchil S. Tomov, and the DBP contributors, affiliations to fill in. The order and the contributor list are yours.
 - **Spelling**: the draft uses British spelling (behaviour, synchronise), like the software's AGENTS.md. Journals accept either; say if you prefer American.
 - **References to check by hand** (marked `% UNVERIFIED` in `references.bib`; their publisher pages could not be read by the fetching tool, so they are written from memory): Peirce 2019 (PsychoPy2), Gorgolewski 2016 (BIDS), Mnih 2015 (DQN), Sonkusare 2019, Nastase 2020, Cross 2021, Bridges 2020, Tomilin 2023 (COOM). Kempka 2016 (ViZDoom) lacks pages and DOI. The Lab Streaming Layer paper is not in the file yet (not verified).

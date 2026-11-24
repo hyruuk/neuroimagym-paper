@@ -7,7 +7,7 @@ The same project lives in two places:
 | Remote | Branch | Used for |
 |---|---|---|
 | `origin`: GitHub, `hyruuk/neuroimagym-paper` (private) | `main` | editing from a terminal or by an agent, review, history |
-| `overleaf`: `https://git.overleaf.com/<project id>` | `master` (Overleaf has only this one) | reading the PDF, commenting and editing in the browser |
+| `overleaf`: `https://git.overleaf.com/<project id>` | `main` (Overleaf has only this one) | reading the PDF, commenting and editing in the browser |
 
 ## Layout
 
@@ -32,9 +32,9 @@ Before and after a working session:
 ```bash
 git fetch origin overleaf
 git merge origin/main
-git merge overleaf/master
+git merge overleaf/main
 git push origin main
-git push overleaf main:master
+git push overleaf main
 ```
 
 - Never force-push and never rewrite history on either remote (Overleaf refuses it anyway).
