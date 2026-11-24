@@ -1,0 +1,27 @@
+# To be moved to .github/workflows/pdf.yml once the GitHub token may push workflows
+# (`gh auth refresh -h github.com -s workflow`, in a browser): see open-decisions.md.
+# Builds main.pdf on every push and pull request that touches the paper's source, and on demand.
+# The PDF is an artifact of the run: `gh run download <run id> -n paper` or the Actions tab.
+name: pdf
+
+on:
+  push:
+    paths: ["**.tex", "**.bib", "**.sty", "figures/**", ".github/workflows/pdf.yml"]
+  pull_request:
+    paths: ["**.tex", "**.bib", "**.sty", "figures/**", ".github/workflows/pdf.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          latexmk_use_lualatex: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper
+          path: main.pdf
+          retention-days: 14
