@@ -1,0 +1,14 @@
+\section{Multimodal integration}
+\label{sec:multimodal}
+
+\begin{outline}
+  \item The rig file: one description of an acquisition setup (screen and its geometry, input devices, sound, trigger line, photodiode, fixations, data folder), in the repository, reviewed with the code, copied into every run's record, and read by other experiment programs as well \TODO{a versioned schema for those programs}.
+  \item Starting a run: wait for the scanner's trigger, send a start code to a MEG or EEG recording, or start at once; the origin of human time (Section~\ref{sec:time}).
+  \item Codes sent during a run: bits for each frame and for the run's lifecycle, or for the participant's responses, over the lab's line (Lab Streaming Layer, serial, parallel, USB data-acquisition boxes) \TODO{cite LSL once its reference is verified}.
+  \item The display: a fixed canvas scaled to any monitor; vertical synchronisation measured, not assumed; every flip stamped; a photodiode patch that alternates with each frame.
+  \item Sound: the game's own audio, each chunk placed a measured delay after its frame's flip.
+  \item Input devices: keyboards, gamepads and MRI- and MEG-compatible controllers under one vocabulary of named controls~\citep{harel2023controller}; per-machine calibration of analogue sticks.
+  \item A recording of every input device the operating system sees, for the whole session, with the system's own timestamps on the run's clock, plus focus changes and machine stalls.
+  \item Measuring the rig: display, frame pacing, triggers, controls, photodiode and audio, short before each session and long once per setup, with reports pooled across sites.
+  \item Eye tracking \TODO{the current integration and its plan}.
+\end{outline}

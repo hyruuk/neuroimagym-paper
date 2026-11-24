@@ -1,0 +1,12 @@
+\section{Logging and reproducibility}
+\label{sec:logging}
+
+\begin{outline}
+  \item The record of a run (Section~\ref{sec:record}) in files: a manifest with the full configuration, the versions and the machine; the run's log of everything read, shown, sent and printed; one log per block with every step, its frames and its sound.
+  \item Written by a separate process and flushed every second, so that a crash loses at most the last second; nothing is ever overwritten, and a run played again goes to a new folder with the same seeds.
+  \item Savestates: the engine's own snapshot where it has one; otherwise the seed and the actions since the reset, restored by replaying them, which makes any deterministic environment restorable.
+  \item Bit-exact replay in a second process, tested for every backend the suite plays \TODO{number of backends and frames compared}.
+  \item Provenance: every manifest names the code version (and whether it had uncommitted changes), the libraries and the machine.
+  \item Resuming: a curriculum belongs to the participant and a run to the acquisition; a run can stop anywhere, and a later run continues from the recorded state.
+  \item From logs to BIDS: events tables, a participants table, and readable timelines of each run, joined with the session's recording of the input devices.
+\end{outline}

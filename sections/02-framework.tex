@@ -1,0 +1,239 @@
+\section{Framework}
+\label{sec:framework}
+
+An experiment in neuroimagym is a sequence of environments, each advanced one step at a time, and a run records when each step became visible to the participant.
+Everything else follows from that relation between steps and time: playing one task with people and with artificial agents, aligning behaviour with brain signals, and reconstructing a run after the fact.
+This section defines the environment, the two time bases an experiment lives on, the three ways an environment can be stepped, and what a run records so that each step can be placed on both time bases.
+The terms defined here (Table~\ref{tab:vocabulary}) are the ones the software and its documentation use.
+
+\subsection{Environments}
+\label{sec:environments}
+
+We call an environment any task that follows the interface of Gymnasium~\citep{towers2024gymnasium}, the maintained successor of OpenAI Gym~\citep{brockman2016gym}.
+An environment is created, then advanced by two calls: \code{reset} starts an episode from a seed and returns the first observation, and \code{step} applies an action and returns the next observation, a reward, whether the episode has ended, and a dictionary of diagnostic information.
+The interface was designed for reinforcement learning, and much of that field's benchmarks implement it, from Atari games~\citep{bellemare2013ale} to first-person 3D games~\citep{kempka2016vizdoom}, open-ended survival worlds~\citep{hafner2022crafter} and procedurally generated dungeons~\citep{kuttler2020nethack,samvelyan2021minihack}.
+Neuroscience tasks have been written in the same form to train artificial networks on them~\citep{molanomazon2022neurogym}.
+An environment is therefore a task that artificial agents can already play.
+
+For an experiment with people, four properties of an environment matter.
+First, the observation that counts is the rendered frame: the image, and the sound if there is any, that a person perceives.
+Second, the environment is deterministic given its seed and its sequence of actions, so that any episode can be reconstructed exactly.
+Third, the meaning of each action is declared, so that the mapping from a person's input devices to actions can be written down and checked.
+Fourth, an environment that has a clock of its own declares its native rate, the number of steps per second at which it runs at its intended speed: an emulated home console runs at 60 frames per second, the Doom engine at 35 tics per second.
+
+Nothing else is asked of an environment, and in particular it knows nothing about the experiment: it has no notion of a scanner, a participant, a trigger or a session.
+All of that belongs to the layer that presents the environment to a person (Section~\ref{sec:architecture}), which keeps the environment identical for every player, human or artificial.
+A game that ships no such environment is given a thin one, which adds the interface and nothing else.
+
+\subsection{Engine time and human time}
+\label{sec:time}
+
+An experiment lives on two time bases.
+Engine time is counted in steps: the state of an environment changes only when it is stepped, and nothing happens between two steps.
+We write $k = 0, 1, 2, \dots$ for the steps of an environment.
+When the environment has a native rate $r$, engine time can also be written in engine seconds, $k / r$.
+Human time is the time of the participant and of the acquisition: seconds on one monotonic, high-resolution clock that every process of a run shares, with its origin at the start of the acquisition.
+That origin is the scanner's trigger in fMRI, the start code sent to the recording in MEG and EEG, and the experimenter's start key when no acquisition device is involved.
+
+The bridge between the two time bases is the screen flip.
+The result of a step reaches the participant when the frame it produced is presented, and a display presents a new frame only at a vertical blank, once per refresh period~$T$ (16.7~ms at 60~Hz).
+For every step, a run records $t_k$, the human time at which the flip that first presented the frame of step~$k$ completed.
+Light reaches the eye a fixed delay later, at $t_k + \delta$, where $\delta$, the display's flip-to-photon latency, is measured once per rig with a photodiode (Section~\ref{sec:multimodal}).
+Responses are stamped on the same clock, at the moment the run reads them, which is at most one refresh period after they happened; where the operating system provides it, each response also carries the input device's own timestamp.
+
+Given the times $t_0 < t_1 < \dots$, any instant $t$ of human time maps to the step on screen,
+\begin{equation}
+  k(t) = \max\{\, k : t_k \le t \,\},
+  \label{eq:step-on-screen}
+\end{equation}
+and any step maps to its onset, $t_k + \delta$.
+This mapping is not a model of the task but a record of the run, exact up to the measured latencies.
+When an environment has a native rate, the number of steps per second of human time divided by $r$ is the speed at which it was played.
+A run reports that speed, so that a game slowed down for the scanner is never mistaken for one played at its intended pace.
+
+Because flips happen only at vertical blanks, every step is shown for a whole number of refresh periods: $t_{k+1} - t_k = n_k T$, with $n_k \ge 1$, in a run that drops no frame.
+The refresh period is thus the quantum of human time in any experiment shown on a screen, whatever the task: a fixation cross of 500~ms is 30 refreshes at 60~Hz, and a game frame at 60~Hz is one.
+Classical paradigms are bound by this grid as much as games are: a stimulus cannot appear between two refreshes, and a response cannot answer a stimulus that is not yet on the screen.
+This is what lets them be treated as environments too.
+
+\subsection{Three stepping regimes}
+\label{sec:regimes}
+
+Environments differ in what decides when the next step happens.
+We distinguish three stepping regimes (Table~\ref{tab:regimes}, Figure~\ref{fig:regimes}).
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{The three stepping regimes. $T$ is the display's refresh period; $n$ is a whole number of refresh periods.}
+  \label{tab:regimes}
+  \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}@{}}
+    \toprule
+    Regime & The next step happens & Action & Examples & Status \\
+    \midrule
+    Fixed-rate & every $n$ refresh periods, at $f = 1/(nT)$ steps per second & the controls held at the step & arcade, console, first-person, racing and browser games & implemented \\
+    Turn-based & at the first flip after a decision & the decision & sliding-block, rule-rewriting and grid-world puzzles & implemented \\
+    Flip-locked & at each flip the task's script requests & a response and its reaction time, where the script waits for one & tasks written for PsychoPy or goxpyriment & planned; prototyped \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\paragraph{Fixed-rate stepping.}
+The environment advances one step every $n$ refresh periods, at a rate $f = 1/(nT)$ chosen to divide the refresh rate, whether or not the participant acts.
+At each step, the action is read from the controls held at that moment, and holding nothing is an action like any other.
+This is how real-time games are played: arcade, console, first-person, racing and browser games.
+Engine time and human time then advance together, in the ratio $f/r$.
+When the computer falls behind, the next step is scheduled from the late flip rather than from the missed one: the run never bursts through several steps to catch up, and it records the stall.
+
+\paragraph{Turn-based stepping.}
+The environment advances one step per decision, that is, per press of a control bound to an action.
+Between two decisions, engine time stands still while human time flows: the interval from $t_k$ to $t_{k+1}$ is the time the participant took to decide, and it is part of the data rather than a pause in it.
+Puzzles are played this way: sliding-block puzzles, rule-rewriting puzzles, grid worlds.
+Some environments contain stretches in which they accept no decision, such as an avatar asleep until its energy is restored.
+There, the environment says which action to apply, and the run steps it at a fixed rate, showing and recording every step, so that nothing is skipped and nothing is hidden.
+
+\paragraph{Flip-locked stepping (planned).}
+Classical neuroimaging tasks are written as scripts for an experiment library, such as PsychoPy~\citep{peirce2019psychopy} or goxpyriment~\citep{pallier2026goxpyriment}.
+A script draws a screen, requests a flip, and waits, for a duration or for a response, before it draws the next one.
+Each flip the script requests can be taken as one step.
+The step's observation is the frame flipped; its duration is whatever the script waits until its next flip, a whole number of refresh periods; and its action, where the script waits for a response, is that response together with its reaction time, measured from the flip.
+The script's own clock is the engine clock.
+With a participant, it is the real clock, so that engine time and human time coincide on the refresh grid.
+With an artificial agent, a virtual clock takes its place: a wait advances the clock without sleeping, a flip rounds the clock up to the next refresh, and a response arrives at the time its reaction time places it.
+Run this way, an unmodified script becomes an environment like the games, with the same record, the same replay and the same players.
+This regime is a design that the software does not implement yet.
+A prototype ran an unmodified PsychoPy card-sorting script flip by flip on a virtual clock, with two independent implementations of the clock and of the responses, and both wrote the same results file \TODO{report the prototype and its measurements in Section~\ref{sec:use-cases}}.
+
+All three regimes produce the same object: a sequence of steps, each shown for a whole number of refresh periods, each stamped in human time, each with the action that produced the next.
+They differ only in what triggers the next step: a fixed schedule, the participant, or the task's script.
+A run already chains phases of different kinds, such as a fixation, instructions, a turn-based puzzle and a real-time game, and records them in one format; the flip-locked regime adds classical tasks to the same chain.
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[x=0.5cm,y=1cm,font=\scriptsize]
+    % The refresh grid: one vertical line per vertical blank.
+    \foreach \i in {0,...,24} {\draw[gray!40] (\i,-0.6) -- (\i,3.4);}
+    \draw[-{Stealth[length=2mm]}] (0,-0.6) -- (25.2,-0.6) node[right] {human time};
+    \draw[decorate,decoration={brace,mirror,amplitude=2pt}] (0,-0.7) -- (1,-0.7) node[midway,below=2pt] {$T$};
+    % Fixed-rate: one step every two refresh periods.
+    \node[anchor=east,font=\small] at (-0.3,3.0) {fixed-rate};
+    \foreach \k in {0,...,11} {
+      \draw[fill=blue!15] ({2*\k},2.75) rectangle ({2*\k+2},3.25);
+      \node at ({2*\k+1},3.0) {\k};
+    }
+    % Turn-based: one step per decision, shown at the first flip after the press.
+    \node[anchor=east,font=\small] at (-0.3,1.8) {turn-based};
+    \foreach \a/\b/\k in {0/7/0,7/11/1,11/19/2,19/24/3} {
+      \draw[fill=orange!20] (\a,1.55) rectangle (\b,2.05);
+      \node at ({(\a+\b)/2},1.8) {\k};
+    }
+    \foreach \p in {6.4,10.3,18.2} {\fill (\p,1.4) circle (1.5pt);}
+    \node[anchor=north] at (6.4,1.35) {press};
+    % Flip-locked: one step per flip the script requests, as long as the script waits.
+    \node[anchor=east,font=\small] at (-0.3,0.6) {flip-locked};
+    \foreach \a/\b/\k/\what in {0/6/0/fixation,6/14/1/stimulus,14/18/2/feedback,18/24/3/fixation} {
+      \draw[fill=green!15] (\a,0.35) rectangle (\b,0.85);
+      \node at ({(\a+\b)/2},0.6) {\k: \what};
+    }
+    \fill (13.4,0.2) circle (1.5pt);
+    \draw[decorate,decoration={brace,mirror,amplitude=2pt}] (6,0.15) -- (13.4,0.15) node[midway,below=2pt] {response, reaction time};
+  \end{tikzpicture}
+  \caption{The three stepping regimes on the display's refresh grid (one vertical line per refresh period~$T$). Each box is one step, from the flip that first shows it to the next flip; the numbers are step indices. Fixed-rate: a step every two refresh periods, whatever the participant does. Turn-based: a step at the first flip after each press (dots). Flip-locked: a step at each flip a task's script requests, for as long as the script waits; the response, with its reaction time measured from the stimulus' flip, is that step's action.}
+  \label{fig:regimes}
+\end{figure}
+
+\subsection{Decision points and actions}
+\label{sec:actions}
+
+A decision point is a step whose transition depends on an action.
+In fixed-rate stepping, every step is one.
+In turn-based stepping, every step is one, and nothing happens between them.
+In flip-locked stepping, only the flips after which the script waits for a response are, and the script itself says where they are, by waiting.
+For an artificial agent, the decision points are where it is asked to act; between them, the environment runs on its own.
+
+Actions are written in the environment's own action space: an index into a set of discrete actions, a set of buttons, a vector of continuous values, or, for a scripted task, a response with its reaction time.
+A person's input devices are mapped onto that space by an explicit table, from named controls (a key, a button, a direction of a stick, an axis) to actions, written in the definition of the task.
+There is no default mapping, so that the table is the documented truth of what each control did.
+The keys with which the experimenter starts and stops a run are reserved and can never be bound to an action.
+
+Inputs are registered between flips.
+The run reads every event that arrived since the previous flip, stamps it when read, and combines the controls held and the controls pressed into the action of the next step, so that a tap shorter than a step still counts.
+When the input devices are also recorded by the operating system alongside the run (Section~\ref{sec:multimodal}), each event carries the system's own timestamp on the same clock, which removes the uncertainty of the reading time.
+
+\subsection{One environment, two kinds of player}
+\label{sec:players}
+
+The same environment is played by people and by artificial agents, and the framework makes explicit what the two share and what they do not.
+They share the environment's code and version; the seeds, and therefore the episodes; the action space; the observation, which is the frame a participant sees; and the format of the record.
+They differ in how actions are produced and in how human time passes.
+A participant plays on the real clock: the display paces the steps, and actions come from input devices through the rig (Section~\ref{sec:architecture}).
+An artificial agent plays on a virtual clock: steps advance as fast as the policy computes, and the policy chooses an action at each decision point.
+Engine time is the same for both; only its mapping to human time differs, and for an agent that mapping is either absent, in fixed-rate and turn-based environments, or simulated, in flip-locked environments, where the reaction time is part of the action.
+
+Two constraints keep the comparison meaningful.
+First, a policy sees only what a participant sees: the frames and the instructions.
+The environment's internal state is recorded for analysis and never handed to the policy, since a policy given the engine's state no longer plays the game the person played.
+Second, the rules of a task live in the environment and nowhere else.
+The layer that presents an environment to a person may add an experimental frame around it (fixations, instructions, a pause menu, a status line that shows what the environment reports), but never a rule, an affordance or a score of its own; if it did, people and models would be playing different tasks.
+
+Under these constraints, a model can be scored on exactly the episodes a participant played, by playing with the same seeds.
+It can also be given the participant's own observations and actions, step by step, to read out its internal states, which yields regressors for the neuroimaging data on the participant's engine time, mapped to human time by the run's record.
+
+\subsection{What a run records}
+\label{sec:record}
+
+Each of these properties is only as good as its record.
+For every step, a run writes its index, the action applied, the human time of the flip that showed it, the variables the environment reports (a score, a position, a game's internal state), and, at a chosen interval, a savestate from which the environment can be restored exactly.
+For every input event and every code sent to an acquisition device, it writes the human time at which it happened.
+For the run as a whole, it writes the full configuration (the definition of the task, the rig, the software versions and the machine) and the seeds.
+
+From this record, one can derive the onset and duration of every step and event, every reaction time, an events table in the Brain Imaging Data Structure~\citep{gorgolewski2016bids}, and, after replay, any variable of the environment at any step.
+Replay is part of the framework rather than a convenience: a run is reconstructed bit for bit in a separate process, from its seeds and actions or from its savestates, and the software tests this for every backend its test suite plays (Section~\ref{sec:validation}).
+A record is never overwritten: a run played again is written next to the first one, with the same seeds.
+
+The units of the record follow from the framework.
+A run is one process that plays one curriculum, the file that defines a sequence of phases (fixations, messages, surveys and environments), and writes one folder.
+A block is one environment phase as played within a run.
+An episode goes from a reset to the end of the environment's task.
+A session is the ordered list of runs a participant does in one visit.
+
+\subsection{Vocabulary}
+\label{sec:vocabulary}
+
+Table~\ref{tab:vocabulary} gathers the terms defined in this section.
+The software's documentation uses the same words, with the same meanings.
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{The vocabulary of the framework, shared with the software's documentation. Where the software uses another name for the same thing, it is given in brackets.}
+  \label{tab:vocabulary}
+  \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Term & Meaning \\
+    \midrule
+    environment & A task with the Gymnasium interface: reset from a seed, step with an action. Its observation, for a person, is the rendered frame. \\
+    backend & The integration of one engine or runtime that produces environments: an emulator, a game engine, a browser, an experiment library. \\
+    step & One transition of an environment; the unit of engine time. \\
+    engine time & Time counted in steps, or in engine seconds when the environment has a native rate. \\
+    human time & Seconds on the run's clock, from the start of the acquisition [\code{run\_time}]. \\
+    flip & The presentation of a frame at a vertical blank; it ties a step to human time. \\
+    refresh period & The interval between two vertical blanks; the quantum of human time on a screen. \\
+    stepping regime & What triggers the next step: a fixed schedule (fixed-rate), a decision (turn-based), or the task's script (flip-locked). \\
+    action & What an environment receives at a step: a discrete choice, a set of buttons, continuous values, or a response with its reaction time. \\
+    control & A named key, button, stick direction or axis of an input device, mapped to actions by the curriculum. \\
+    decision point & A step whose transition depends on an action. \\
+    episode & From a reset to the end of the environment's task. \\
+    phase & One entry of a curriculum: a fixation, a message, a survey, or an environment [\code{game}]. \\
+    block & An environment phase as played in a run. \\
+    curriculum & The file a run plays: an ordered list of phases, the same for every participant and every rig. \\
+    run & One curriculum played once by one participant: one command, one process, one data folder. \\
+    session & The runs a participant does in one visit, in order, written as a session script. \\
+    rig & One acquisition setup (computer, screen, input devices, trigger line), described once in a rig file. \\
+    participant, agent & A person, or an artificial policy, playing an environment. \\
+    real clock, virtual clock & Wall time, for participants; a clock that advances only when the task says so, for agents, tests and replay. \\
+    savestate & A snapshot from which an environment is restored exactly. \\
+    replay & Rebuilding a run's frames and states from its seeds and actions, or from its savestates. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
