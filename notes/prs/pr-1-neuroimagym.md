@@ -32,14 +32,19 @@ One name for the project and its one command; the tools are found with `neuroima
 
 ## How it was verified
 
-TODO: fill from the final run (the suite's summary line, the skip lines, the hand checks below).
+- `uv run pytest --changed origin/main`: 1562 passed. The failures are all in `gym/minihack/tests`, `gym/vizdoom/tests` and `gym/coom/tests` (their packages were not installed here: `ModuleNotFoundError`), and crafter's, which the selection requires because a comment in `gym/crafter` changed: with the `crafter` extra, `uv run pytest --backend crafter` gives 1567 passed. On the branch's last commit, `uv run pytest --backend gym,crafter`: 1581 passed.
+- `uv run ruff check humans agents tests gym/*/tests tools` and `lint-imports`: clean.
+- By hand: `uv run neuroimagym` lists the six subcommands and exits 2; `uv run neuroimagym --version` prints `neuroimagym 0.2.0`; each `uv run neuroimagym <subcommand> --help` prints `usage: neuroimagym <subcommand> ...`; an unknown subcommand is refused with the list.
+- Old records still read: a run recorded on `origin/main` (`versions.fmri_gym`, `fmri-gym-log`) converts with this branch's `neuroimagym parse-logs`, and its timeline gives its version.
+- Not played here: the backends whose engines are not installed on this Mac (CI plays them). The `gym/{arc3,baba_auto,coom,vgdl}` changes are docstrings, comments and one hint string each.
 
 ## See it yourself
 
-TODO: run both sides as written before posting.
+Run on this Mac on 2026-11-25, both sides, with `uv sync --extra gui`:
 
-- Before (`origin/main`): `uv sync --extra gui && uv run fmri-play --help` prints the usage of `fmri-play`; a headless run's `manifest.json` has `versions.fmri_gym`.
-- After (this branch): `uv sync --extra gui && uv run neuroimagym` lists the subcommands; `uv run neuroimagym play --help`; the same headless run's manifest has `versions.neuroimagym` and `log_format.format == "neuroimagym-log"`.
+- Before (`git switch --detach origin/main`): `uv run fmri-play --help` prints `usage: fmri-play ...`; `uv run neuroimagym` fails (`Failed to spawn: neuroimagym`). A headless run, `SDL_VIDEODRIVER=dummy uv run python -m tests.headless --curriculum configs/curricula/gym/levels/cartpole.json --data-root /tmp/before --duration 8 --no-audio`, writes a manifest whose `versions` has `fmri_gym` and whose `log_format` is `{"format": "fmri-gym-log", "version": 2}`.
+- After (`git switch --detach origin/neuroimagym`): `uv run neuroimagym` lists the subcommands; `uv run neuroimagym play --help` prints `usage: neuroimagym play ...`. The same headless run (`--data-root /tmp/after`) writes `versions.neuroimagym` and `{"format": "neuroimagym-log", "version": 2}`.
+- Old records: with the before side's data root in a rig file (`{"screen": {"geometry": {"width_cm": 30, "height_cm": 20, "distance_cm": 60}}, "data_root": "/tmp/before"}` saved as `/tmp/old/team/rigs/old.json`), `uv run neuroimagym parse-logs --rig /tmp/old/team/rigs/old.json --out /tmp/bids-old` writes the dataset, and the run's timeline starts with `code      neuroimagym 0.1.0, git 9a58bfd`.
 
 ## Outside this repository (for the release note)
 

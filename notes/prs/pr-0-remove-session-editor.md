@@ -41,9 +41,9 @@ One definition of a session script remains, the committed examples, and a test n
 
 ## See it yourself
 
-TODO before opening: run both sides as written (the pull-request skill asks for it).
+Run on this Mac on 2026-11-25, both sides, in a worktree of each ref with `uv sync --extra gui`:
 
-- Before: `git switch --detach origin/main && uv sync --extra gui && uv run session-editor --help` prints the editor's usage.
-- After: `git switch --detach origin/remove-session-editor && uv sync --extra gui && uv run session-editor --help` fails: uv finds no such command. `uv run pytest tests/test_session_script.py -q` plays the eight committed scripts.
+- Before (`git switch --detach origin/main`): `uv run session-editor --help` prints `usage: session-editor [-h] [--curriculum CURRICULUM] [--session SESSION]`.
+- After (`git switch --detach origin/remove-session-editor`): `uv run session-editor --help` stops with `error: Failed to spawn: session-editor`; `uv run fmri-play --help` still prints its usage; `uv run pytest tests/test_session_script.py -q` plays the eight committed session scripts: `12 passed`.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
