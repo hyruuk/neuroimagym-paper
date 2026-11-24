@@ -21,3 +21,13 @@ Worktree `~/GitHub/DBP/dev/fmri-gym-worktrees/neuroimagym` (its `.venv` has the 
 | 15cd3e9 | `neuroimagym` | the remaining names: windows, docs, comments, session headers |
 
 Verified on this Mac: the suite (`--changed origin/main` and `--backend gym,crafter`: 1581 passed on the last commit), ruff, lint-imports. Not played here: the backends whose engines are not installed (minihack, vizdoom, coom, baba_auto, vgdl, arc3, aigamestore, rushhour, stk, retro, ale, nethack); CI plays them once the PRs are open and ready. The PR descriptions are drafted in `notes/prs/`; their "See it yourself" steps still have to be run on both refs before posting.
+
+### The documentation: PR 2, committed locally (2026-11-25, early morning)
+
+Branch `docs-site`, on top of PR 1, six commits (5c546ef … 9c38830): the mkdocs site (33 pages, a strict build with no warning, HTML and PDF by `./build_docs.sh`), the backend READMEs holding their setup, the 80-line README, QUICKSTART and old `docs/*.md` folded in, AGENTS.md and the troubleshooting skill pointing to the docs, `tests/test_docs.py`, three adapter docstrings corrected. The planned PR 3 (generated command reference, backends table) is folded in: every page links to the reference. Suite on the branch: 1685 passed.
+
+Drafted by four helper agents from the README, QUICKSTART, the DBP_Welcome pages (made DBP-agnostic) and the code; I wrote the overview pages, the README, the tests and the generator, and reviewed and integrated the rest. Their findings where the code disagreed with the old docs are in `notes/prs/pr-2-docs-site.md`; the code issues they found are in `open-decisions.md`, section 4. To read the site: `uvx --with mkdocs-material --with mkdocs-print-site-plugin mkdocs serve` in the worktree, or `dist/neuroimagym-docs.pdf` there.
+
+The paper's Framework was corrected on one point the review found: only key presses get the operating system's timestamp today.
+
+Scratch worktree `~/GitHub/DBP/dev/fmri-gym-worktrees/main-9a58bfd` (detached at PR 0's commit, with its own `.venv`) was used for the before/after checks; remove it with `git -C ~/GitHub/DBP/fmri-gym worktree remove ../dev/fmri-gym-worktrees/main-9a58bfd` when it is no longer needed.

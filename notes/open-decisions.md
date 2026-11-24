@@ -43,4 +43,10 @@ Also, for a PDF built on GitHub at every push: the `gh` token here has no `workf
 - `screen.size`: the rig form's tooltip ("Not used in fullscreen") and the `ScreenConfig` docstring say it is ignored in fullscreen; `Display` uses it as the canvas, scaled to the monitor. The docs say what `Display` does.
 - `python -m humans.standalone.photodiode --audio-click`: its help says a click "on each white flip"; the code clicks on every other flash.
 - `fmri-play --subject` (now `neuroimagym play --subject`) defaults to `sub-test` when left out (already listed above).
+- `neuroimagym parse-logs` without `--subject` crashes (`KeyError: 'start_epoch'`) on a data root that holds rig measurements: `sub-rig` matches its `sub-*` glob, and a rig measurement's manifest has no `start_epoch`. One line to skip it.
+- A curriculum phase's unknown keys are silently ignored (a typo in a field name plays with the default): against Rule 4, "one shape per input". Worth a check at load, as the rig file has.
+- `rewind_on` on a backend that keeps no per-frame savestate is not caught at start-up; the block fails on its first frame.
+- `tests/test_configs.py` validates `configs/curricula/` only, not the team curricula in `configs/<team>/curricula/`.
+- The VLM policy's prompt is written for Crafter; a dropped VLM call is counted both in `dropped_calls` and `invalid_replies`.
+- The photodiode offset's sign: the old README said to subtract the flip-to-light delay from `flip_time`; the new pages (and the paper) say light arrives at `flip_time` plus the delay. Check the sign your analysis uses.
 
