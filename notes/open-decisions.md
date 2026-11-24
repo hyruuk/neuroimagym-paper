@@ -36,3 +36,11 @@ Also, for a PDF built on GitHub at every push: the `gh` token here has no `workf
 - **Recorded names**: the plan changes the log marker to `neuroimagym-log` (readers accept both) and the default LSL stream name to `neuroimagym` (rigs made with the form keep the name they wrote). Both are yours and tomov's call; the alternative is to keep `fmri-gym-log` and `fmri_gym` for continuity.
 - **`--subject` defaults to `sub-test`** when left out: a silent default that files data under the wrong participant. The plan proposes a separate small PR to make it required.
 - **No licence** in the repository: the paper's code-availability statement and the documentation both need one. tomov's choice.
+
+## 4. Small code issues found while writing the documentation (follow-up PRs, not fixed yet)
+
+- The rig measurement's start screen always says the photodiode square is bottom-right, whatever the rig's `photodiode_patch.corner` says.
+- `screen.size`: the rig form's tooltip ("Not used in fullscreen") and the `ScreenConfig` docstring say it is ignored in fullscreen; `Display` uses it as the canvas, scaled to the monitor. The docs say what `Display` does.
+- `python -m humans.standalone.photodiode --audio-click`: its help says a click "on each white flip"; the code clicks on every other flash.
+- `fmri-play --subject` (now `neuroimagym play --subject`) defaults to `sub-test` when left out (already listed above).
+

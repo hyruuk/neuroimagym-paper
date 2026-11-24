@@ -39,7 +39,8 @@ The bridge between the two time bases is the screen flip.
 The result of a step reaches the participant when the frame it produced is presented, and a display presents a new frame only at a vertical blank, once per refresh period~$T$ (16.7~ms at 60~Hz).
 For every step, a run records $t_k$, the human time at which the flip that first presented the frame of step~$k$ completed.
 Light reaches the eye a fixed delay later, at $t_k + \delta$, where $\delta$, the display's flip-to-photon latency, is measured once per rig with a photodiode (Section~\ref{sec:multimodal}).
-Responses are stamped on the same clock, at the moment the run reads them, which is at most one refresh period after they happened; where the operating system provides it, each response also carries the input device's own timestamp.
+Responses are stamped on the same clock, at the moment the run reads them, which is at most one refresh period after they happened.
+A recording of the input devices that runs beside the session adds the operating system's own timestamp of each event, on the same clock, and the conversion of the logs matches it to the key presses the run read \TODO{controller buttons are not matched yet}.
 
 Given the times $t_0 < t_1 < \dots$, any instant $t$ of human time maps to the step on screen,
 \begin{equation}
@@ -158,7 +159,7 @@ The keys with which the experimenter starts and stops a run are reserved and can
 
 Inputs are registered between flips.
 The run reads every event that arrived since the previous flip, stamps it when read, and combines the controls held and the controls pressed into the action of the next step, so that a tap shorter than a step still counts.
-When the input devices are also recorded by the operating system alongside the run (Section~\ref{sec:multimodal}), each event carries the system's own timestamp on the same clock, which removes the uncertainty of the reading time.
+When the input devices are also recorded by the operating system alongside the run (Section~\ref{sec:multimodal}), a key press gets the system's own timestamp on the same clock, which removes the uncertainty of the reading time.
 
 \subsection{One environment, two kinds of player}
 \label{sec:players}
