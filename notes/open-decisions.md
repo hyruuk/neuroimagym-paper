@@ -12,6 +12,8 @@ The GitHub side is ready. To connect Overleaf without a conflict on `main.tex`:
 4. In your own terminal (not through me), run `git -C ~/GitHub/humain/neuroimagym-paper fetch overleaf` once, and answer `git` as the username and your Overleaf Git token as the password (Overleaf: Account settings → Git integration). The keychain keeps it (`osxkeychain` is the credential helper of Homebrew's git here); it never goes into a URL or a file.
 5. I run the first sync: `git merge --allow-unrelated-histories overleaf/master`, then push to both.
 
+Also, for a PDF built on GitHub at every push: the `gh` token here has no `workflow` scope, so GitHub refuses any commit that adds a file under `.github/workflows/`. Run `gh auth refresh -h github.com -s workflow` (it opens a browser), and I move `notes/pdf-workflow.yml` into place. Optional: Overleaf compiles the paper anyway.
+
 ## 2. The paper
 
 - **Working title**: "neuroimagym: step-based environments as a common medium for people and artificial agents in neuroimaging experiments". Alternatives: "Playing the same game: …"; "One environment for people and models: …". Recommendation: keep the working title until the abstract is final.

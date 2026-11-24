@@ -8,3 +8,4 @@ Working notes for the paper and for the work on the software it describes. Not p
 | `progress-log.md` | what was done, where it is, what comes next |
 | `plan-2026-11-24.md` | the approved plan: the rename to neuroimagym, the documentation, the principles, this paper; its appendix holds the findings of the exploration of the code and of the DBP ecosystem |
 | `psych-backend-feasibility-2026-11-23.md` | the feasibility study of running classical PsychoPy and goxpyriment tasks as environments: the basis of the flip-locked regime |
+| `pdf-workflow.yml` | the GitHub workflow that builds the PDF, waiting for a token allowed to push workflows |
