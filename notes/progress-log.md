@@ -20,7 +20,7 @@ Worktree `~/GitHub/DBP/dev/fmri-gym-worktrees/neuroimagym` (its `.venv` has the 
 | f700551 | `neuroimagym` | recorded names: `neuroimagym-log`, LSL default `neuroimagym`, calibrations in `~/.config/neuroimagym/pads` (old folder read, and said), Docker image |
 | 15cd3e9 | `neuroimagym` | the remaining names: windows, docs, comments, session headers |
 
-Verified on this Mac: the suite (`--changed origin/main` and `--backend gym,crafter`: 1581 passed on the last commit), ruff, lint-imports. Not played here: the backends whose engines are not installed (minihack, vizdoom, coom, baba_auto, vgdl, arc3, aigamestore, rushhour, stk, retro, ale, nethack); CI plays them once the PRs are open and ready. The PR descriptions are drafted in `notes/prs/`; their "See it yourself" steps still have to be run on both refs before posting.
+Verified on this Mac: the suite (`--changed origin/main` and `--backend gym,crafter`: 1581 passed on the last commit), ruff, lint-imports. Not played here: the backends whose engines are not installed (minihack, vizdoom, coom, baba_auto, vgdl, arc3, aigamestore, rushhour, stk, retro, ale, nethack); CI plays them once the PRs are open and ready. The PR descriptions are in `notes/prs/`; their "See it yourself" steps were run on both refs on 2026-11-25, and their outputs are quoted there.
 
 ### The documentation: PR 2, committed locally (2026-11-25, early morning)
 
