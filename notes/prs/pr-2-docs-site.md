@@ -1,6 +1,6 @@
 # PR 2 — The documentation is a website: docs/, built with mkdocs
 
-Branch `docs-site` (local, in `~/GitHub/DBP/dev/fmri-gym-worktrees/neuroimagym`), stacked on PR 1 (`neuroimagym`): review its own six commits. Not pushed, not opened. Pushing it needs the `workflow` scope too (it adds `.github/workflows/docs.yml`). The planned PR 3 (generated reference) is folded in, since every page links to the generated command reference.
+Branch `docs-site` (local, in `~/GitHub/DBP/dev/fmri-gym-worktrees/neuroimagym`), stacked on PR 1 (`neuroimagym`): review its own seven commits. Not pushed, not opened. Pushing it needs the `workflow` scope too (it adds `.github/workflows/docs.yml`). The planned PR 3 (generated reference) is folded in, since every page links to the generated command reference.
 
 ---
 
@@ -23,7 +23,8 @@ Whatever a reader came for, they had to read past the rest, and what they found 
 - `README.md` is an 80-line front door. QUICKSTART and the old `docs/*.md` are folded into the pages and removed; `docs/local-testing/` is removed (it stays in the history); the DBP game lists move to `configs/BC/`.
 - Each backend's README (`configs/curricula/<backend>/common/README.md`) holds its setup, moved from the README's per-game sections.
 - AGENTS.md points people and agents to the docs and adds the documentation's own rules to Rule 3; the troubleshooting skill keeps only the agent's procedure and points to `docs/troubleshooting.md`.
-- `tests/test_docs.py` (engine-free, so it runs in CI's core job): links lead to files, every page is in the menu, former names appear only where a line says what they became, the generated parts are current, and every `neuroimagym` command a page shows parses with that subcommand's own parser.
+- Figures and screenshots where a picture explains faster than a paragraph: five figures (a run's inputs and outputs; a session down to its steps; the two stepping regimes; how a run starts in each sync mode, with its codes; what is stamped when around a frame), drawn in TikZ in `docs/images/src/` and made into SVG; seven screenshots drawn by neuroimagym itself (a run's screens in a row, a game frame with its status strip, instructions with a controls image, the pause menu, three steps of the rig form). `tools/docs_images.py figures|screens` remakes them; `docs/contributing/index.md` says when.
+- `tests/test_docs.py` (engine-free, so it runs in CI's core job): links lead to files, every page is in the menu, every image is shown on a page and every figure has its source, former names appear only where a line says what they became, the generated parts are current, and every `neuroimagym` command a page shows parses with that subcommand's own parser.
 - Code: no behaviour change. Help texts of `play` and `rig` say what the reference shows; three adapter docstrings are corrected; pointers to README sections point to pages.
 
 ## Why that solves it
@@ -32,14 +33,15 @@ A reader finds a page per task; each fact has one page, which the others link to
 
 ## How it was verified
 
-- `mkdocs build --strict`: no warning. `./build_docs.sh`: the HTML zip and the PDF (cover, contents, every page).
-- `uv run pytest tests/test_docs.py`: 104 passed. The suite on the branch, `uv run pytest --backend gym,crafter`: 1685 passed, 9 skipped (the Linux session reader and backends not selected). ruff and lint-imports clean.
+- `mkdocs build --strict`: no warning. `./build_docs.sh`: the HTML zip and the PDF (cover, contents, every page, every image).
+- `uv run pytest tests/test_docs.py`: 106 passed. The suite on the branch, `uv run pytest --backend gym,crafter`: 1687 passed, 9 skipped (the Linux session reader and backends not selected). ruff and lint-imports clean.
 
 ## See it yourself
 
 - `uvx --with mkdocs-material --with mkdocs-print-site-plugin mkdocs serve`, then http://127.0.0.1:8000.
 - `./build_docs.sh`: `dist/neuroimagym-docs.pdf`, `dist/neuroimagym-docs-html.zip`.
 - `uv run python tools/docs_tables.py --check`; `uv run pytest tests/test_docs.py -q`.
+- `uv run python tools/docs_images.py figures` (needs Tectonic and Poppler) and `uv run python tools/docs_images.py screens` (needs the `gui` and `crafter` extras): `git status` shows the figures unchanged, and the screenshots changed only where a headless run's random presses differ.
 
 ## What the pages say differently from the old README, because the code says so
 
@@ -47,8 +49,8 @@ The start key is RETURN, and CTRL+ESCAPE quits (ESCAPE alone does nothing); `min
 
 ## For you to look at (also in open-decisions.md)
 
-- The photodiode offset: the old README said to subtract the flip-to-light delay from `flip_time`; the pages say light reaches the screen at `flip_time` plus the delay. Check the sign you use in analysis.
-- `neuroimagym parse-logs` without `--subject` crashes (`KeyError: 'start_epoch'`) on a data root that holds rig measurements (`sub-rig`); the page tells readers to convert one participant at a time. A one-line fix for a follow-up PR.
+- The photodiode offset: the old README said to subtract the flip-to-light delay from `flip_time`; the pages say light reaches the screen at `flip_time` plus the delay, which is what the code measures (`photodiode.match_edges`: the diode's edge minus the flip).
+- `neuroimagym parse-logs` without `--subject` crashes (`KeyError: 'start_epoch'`) on a data root that holds rig measurements (`sub-rig`), #269; the page tells readers to convert one participant at a time.
 - Windows was not tried; the install page's Windows limits are read from the packages' wheels.
 - Whether the GHCR image is public, and its name after the rename.
 - The session launchers' limits with neuroimagym's scripts are written as facts on `sessions/launchers.md`; their reconciliation is the planned follow-up.

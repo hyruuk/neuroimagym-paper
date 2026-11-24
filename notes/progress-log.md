@@ -31,3 +31,13 @@ Drafted by four helper agents from the README, QUICKSTART, the DBP_Welcome pages
 The paper's Framework was corrected on one point the review found: only key presses get the operating system's timestamp today.
 
 Scratch worktree `~/GitHub/DBP/dev/fmri-gym-worktrees/main-9a58bfd` (detached at PR 0's commit, with its own `.venv`) was used for the before/after checks; remove it with `git -C ~/GitHub/DBP/fmri-gym worktree remove ../dev/fmri-gym-worktrees/main-9a58bfd` when it is no longer needed.
+
+## 2026-11-24, day (with you back)
+
+- **The paper is one file**, `main.tex` (bbeb6bc): the sections are in it, in reading order, and `sections/` is gone. The software is NeuroimaGym in prose; the working title is technical (alternatives in `open-decisions.md`, section 2); authors for now: Yann Harel, Momchil S. Tomov, the DBP contributors.
+- **Three outlined subsections** for what you asked to add, each with a `\status{}` line read in the code at 9a58bfd: Seeds (4.1), Byte-identical replay (4.2), The rig measurement suite (5.1). All three are implemented; what is not established is said (what the seed determines per backend; replay across machines; published rig numbers).
+- **Table 4**, a placeholder comparing NeuroimaGym with experiment libraries, task collections and RL environments (Section 8.1), cited from the introduction's gap.
+- It compiles with Tectonic (10 pages, no undefined reference); the sources are plain ASCII, as Overleaf's pdflatex needs.
+- **The Overleaf zip**: `~/Desktop/neuroimagym-paper.zip`, `git archive` of `main` at the commit that adds this entry.
+- **Issues #269 to #277** on tomov/fmri-gym, one per code problem the documentation work found (`open-decisions.md`, section 4), each checked on `main` (9a58bfd); #269 and #270 reproduced there. The photodiode sign needed no issue: the code settles it.
+- **The documentation**: commit 5b739ba on `docs-site` adds five figures and seven screenshots and `tools/docs_images.py` (the PR 2 description says what and where). The suite on the branch, `--backend gym,crafter`: 1687 passed, 9 skipped.
