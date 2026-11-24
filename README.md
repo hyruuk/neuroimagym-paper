@@ -1,6 +1,6 @@
-# neuroimagym: the methods paper
+# NeuroimaGym: the methods paper
 
-The LaTeX source of the paper that presents [neuroimagym](https://github.com/tomov/fmri-gym) (the software is being renamed from fmri-gym): step-based environments as one medium for people and artificial agents in neuroimaging experiments, with their logging, multimodal integration and modular design. An arXiv preprint first, a journal after.
+The LaTeX source of the paper that presents [NeuroimaGym](https://github.com/tomov/fmri-gym) (the software is being renamed from fmri-gym): step-based environments as one medium for people and artificial agents in neuroimaging experiments, with their logging, multimodal integration and modular design. An arXiv preprint first, a journal after.
 
 The same project lives in two places:
 
@@ -13,8 +13,7 @@ The same project lives in two places:
 
 | Path | What it is |
 |---|---|
-| `main.tex` | the document: preamble, title, authors, the sections in order, the bibliography |
-| `sections/*.tex` | one file per section, numbered in reading order |
+| `main.tex` | the whole paper, in one file: preamble, title, authors, every section in reading order, the bibliography |
 | `references.bib` | every reference the text cites |
 | `figures/` | the figures, and `figures/README.md` for where each one comes from |
 | `arxiv.sty` | the arXiv preprint style (MIT licence, `arxiv-sty-LICENSE.txt`) |

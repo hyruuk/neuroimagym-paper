@@ -1,9 +1,0 @@
-\begin{abstract}
-Naturalistic neuroimaging increasingly asks participants to act rather than watch, and computational neuroscience increasingly compares brains with artificial agents trained on the same tasks.
-Both need a task that people and models can play identically, and a record that places every event of a run on the time base of the brain recording.
-We present neuroimagym, open-source software that runs environments with the Gymnasium interface, the standard of reinforcement learning, as tasks in fMRI, MEG, EEG and behavioural sessions.
-Its framework treats every task as an environment advanced in steps, and records for each step the screen flip that presented it, which translates exactly between the environment's engine time and the participant's human time.
-Real-time games step at a fixed rate and puzzles at each decision; classical paradigms, in a regime we are building, step at each flip their script requests, so that all of them share one record, one replay mechanism and one set of players.
-Around this core, neuroimagym describes each acquisition setup once, in a rig file that other programs can read; it measures display, audio and trigger timing; it synchronises with scanners and MEG and EEG systems; it records every input device; and it converts its logs to BIDS.
-\TODO{validation results and use cases, one sentence each, once Sections~\ref{sec:validation} and~\ref{sec:use-cases} are written.}
-\end{abstract}

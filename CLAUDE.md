@@ -1,6 +1,6 @@
-# neuroimagym paper
+# NeuroimaGym paper
 
-The methods paper for neuroimagym (formerly fmri-gym). LaTeX only; `main.tex` at the root, one file per section in `sections/`.
+The methods paper for NeuroimaGym (the software `neuroimagym`, formerly fmri-gym). LaTeX only, and the whole paper is one file, `main.tex`, at the root: no `\input` of sections.
 
 ## The source
 
@@ -8,8 +8,9 @@ The methods paper for neuroimagym (formerly fmri-gym). LaTeX only; `main.tex` at
 - `main.tex` must compile on Overleaf with pdflatex and latexmk: packages from TeX Live only, no shell-escape, no local-only files.
 - Every citation key exists in `references.bib`. An entry is copied from a page that shows it (arXiv, the publisher, PubMed); an entry that could not be checked carries a `% UNVERIFIED` comment and is listed in `notes/open-decisions.md`.
 - Every number in the text comes from a measurement, a log or the code, and says which. Until it does, it is `\TODO{…}`.
-- `\TODO{…}` marks what is missing; the `outline` environment holds the planned content of a section that is not drafted yet, shown in grey in the PDF.
-- The vocabulary is the one defined in the Framework section (`sections/02-framework.tex`, the vocabulary table). The software's documentation (`docs/overview/concepts.md` in the neuroimagym repository) uses the same words; a change to one is a change to both.
+- `\TODO{…}` marks what is missing; the `outline` environment holds the planned content of a section that is not drafted yet, shown in grey in the PDF; `\status{…}` says, in an outline item, how much of it the software does today, as found in its code, and goes once the item is drafted.
+- The software is NeuroimaGym in prose; `neuroimagym` only where the text names a command or the package.
+- The vocabulary is the one defined in the Framework section (Section 2 of `main.tex`, the vocabulary table). The software's documentation (`docs/overview/concepts.md` in the neuroimagym repository) uses the same words; a change to one is a change to both.
 - Describe what the software does today. What is planned is written as planned, with its status (a prototype, a design), never as a feature.
 
 ## Git
