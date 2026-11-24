@@ -19,13 +19,12 @@ The same project lives in two places:
 | `figures/` | the figures, and `figures/README.md` for where each one comes from |
 | `arxiv.sty` | the arXiv preprint style (MIT licence, `arxiv-sty-LICENSE.txt`) |
 | `notes/` | working notes, decisions to take, the plan; not part of the paper |
-| `.github/workflows/pdf.yml` | builds `main.pdf` on GitHub for every push that touches the source |
 
 ## Building the PDF
 
 - On Overleaf: open the project; `main.tex` is the main document.
-- On GitHub: every push builds `main.pdf`; download it from the run's artifacts (`gh run download` or the Actions tab).
-- Locally, with a TeX distribution: `latexmk -pdf main.tex`.
+- Locally, with a TeX distribution: `latexmk -pdf main.tex`; or with [Tectonic](https://tectonic-typesetting.github.io): `tectonic main.tex`.
+- On GitHub: a workflow that builds `main.pdf` on every push is ready in `notes/pdf-workflow.yml`; it goes to `.github/workflows/` once the GitHub token may push workflows (`notes/open-decisions.md`).
 
 ## Keeping GitHub and Overleaf in sync
 
