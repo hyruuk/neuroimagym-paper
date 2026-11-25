@@ -16,7 +16,7 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,decorations.pathreplacing}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,positioning}
 \usepackage[round,authoryear]{natbib}
 \usepackage{url}
 \usepackage{hyperref}
@@ -26,6 +26,8 @@
 \newcommand{\TODO}[1]{\textcolor{red}{[\textbf{TODO:} #1]}}
 % How much of an outline item the software does today, as found in its code; removed once the item is drafted.
 \newcommand{\status}[1]{\textcolor{teal!70!black}{[\textbf{Status:} #1]}}
+% A design question the authors have not settled, in blue in the PDF; removed once it is answered.
+\newcommand{\question}[1]{\textcolor{blue!70!black}{[\textbf{Open question:} #1]}}
 % The planned content of a section that is not drafted yet, in grey in the PDF.
 \newenvironment{outline}{\par\color{gray}\small\noindent\textit{Outline, not drafted yet:}\begin{itemize}[nosep,leftmargin=*]}{\end{itemize}\par}
 % A name taken from the software: a command, a file, a field of the record.
@@ -52,13 +54,29 @@
 \begin{document}
 \maketitle
 
+% How to read this draft: removed before submission.
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\small
+\textbf{How to read this draft.}
+This manuscript is a working canvas, not a finished paper.
+We use it to sketch the skeleton of NeuroimaGym: the principles the software should follow, drawn from how we use it today and from where we want it to go.
+Each section therefore holds three kinds of text.
+Black prose states a principle or a definition we intend to keep.
+\textcolor{teal!70!black}{Status} notes say how much of it the software does today, as read in its code.
+\textcolor{blue!70!black}{Open questions} are design choices we have not settled, and \textcolor{red}{TODO}s are what is missing, including every number not yet measured.
+Grey outlines are sections whose content is planned but not written.
+When the code and the principle disagree, the principle is the proposal and the status is the fact.
+}}
+\end{center}
+
 \begin{abstract}
 Naturalistic neuroimaging increasingly asks participants to act rather than watch, and computational neuroscience increasingly compares brains with artificial agents trained on the same tasks.
 Both need a task that people and models can play identically, and a record that places every event of a run on the time base of the brain recording.
 We present NeuroimaGym, open-source software that runs environments with the Gymnasium interface, the standard of reinforcement learning, as tasks in fMRI, MEG, EEG and behavioural sessions.
 Its framework treats every task as an environment advanced in steps, and records for each step the screen flip that presented it, which translates exactly between the environment's engine time and the participant's human time.
-Real-time games step at a fixed rate and puzzles at each decision; classical paradigms, in a regime we are building, step at each flip their script requests, so that all of them share one record, one replay mechanism and one set of players.
-Every run records the seeds of its episodes, derived from the run's name or pinned for every participant, and can be replayed bit for bit in a separate process.
+Real-time games step at a fixed rate and puzzles at each decision; classical paradigms, in a regime we are designing, would step at each flip their script requests, so that all of them share one record, one replay mechanism and one set of players.
+The record's core is small: the seeds of the episodes and the action of every step.
+Replaying it is the ground truth of what the participant experienced, and we define reproducibility by what a replay allows: the state of the game must be reproduced exactly, or the divergence flagged and measured; perceptual features of the stimulus, such as luminance, motion and loudness, must be reproduced within a stated tolerance; identical pixels and audio samples are welcome but never required.
 Around this core, NeuroimaGym describes each acquisition setup once, in a rig file that other programs can read; it measures the setup's display, frame pacing, trigger, input and audio timing with a suite of its own; it synchronises with scanners and MEG and EEG systems; it records every input device; and it converts its logs to BIDS.
 \TODO{validation results and use cases, one sentence each, once Sections~\ref{sec:validation} and~\ref{sec:use-cases} are written.}
 \end{abstract}
@@ -69,10 +87,11 @@ Around this core, NeuroimaGym describes each acquisition setup once, in a rig fi
 
 \begin{outline}
   \item Neuroimaging is moving from controlled stimuli to naturalistic ones~\citep{sonkusare2019naturalistic,nastase2020keepitreal}, and from watching to acting: video games give rich, closed-loop tasks in which what the participant sees depends on what they did~\citep{cross2021deep,tomov2023neural,harel2023controller,boyle2025cneuromod}.
-  \item A closed-loop stimulus can only be analysed if it can be reconstructed: the run must be replayable, frame by frame, from what was recorded.
+  \item A closed-loop stimulus can only be analysed if it can be reconstructed. In a film, the stimulus is the file; in a game, the stimulus is produced by the participant's own actions, and it exists afterwards only if the run can be played again from what was recorded.
   \item Comparing brains with artificial agents needs the same task for both. Reinforcement learning already has a common medium, the environment~\citep{brockman2016gym,towers2024gymnasium}, used for games~\citep{bellemare2013ale,mnih2015dqn} and for neuroscience tasks~\citep{molanomazon2022neurogym}; human experiments are written as scripts for experiment libraries~\citep{peirce2019psychopy,pallier2026goxpyriment}, whose timing has been compared in detail~\citep{bridges2020timing}.
   \item The gap: an environment knows only steps, a script knows only wall time, and neither records the translation between the two; a model's step cannot be aligned with a participant's brain signal unless that translation is part of the data. What each kind of tool offers is set against NeuroimaGym in Table~\ref{tab:comparison}.
-  \item Contributions: (1) a framework in which every task is an environment stepped in one of three regimes, with a record that maps engine time to human time (Section~\ref{sec:framework}); (2) software that implements it for 15 game backends, with one record format, managed seeds and bit-exact replay (Sections~\ref{sec:architecture} and~\ref{sec:logging}); (3) a description of the acquisition setup, and a suite that measures its timing, which make the record trustworthy (Section~\ref{sec:multimodal}); (4) people and artificial agents on the same environments, with the same seeds and the same record (Section~\ref{sec:players}).
+  \item Contributions: (1) a framework in which every task is an environment stepped in one of three regimes, with a record that maps engine time to human time (Section~\ref{sec:framework}); (2) a definition of reproducibility by what it allows, in which the replay of a small input record is the ground truth of the run, the game's state is reproduced exactly or its divergence flagged, and the stimulus is reproduced in the features an analysis uses (Section~\ref{sec:reproducibility}); (3) software that implements the framework for 15 game backends, with one record format and managed seeds (Section~\ref{sec:architecture}); (4) a description of the acquisition setup, and a suite that measures its timing, which make the record trustworthy (Section~\ref{sec:multimodal}); (5) people and artificial agents on the same environments, with the same seeds and the same record (Section~\ref{sec:players}).
+  \item What this paper is: the framework and the principles behind the software, with an honest account of how much of each is built (Section~\ref{sec:roadmap}). \question{whether the submitted version keeps this design-document character, or reports only what is built and moves the rest to the discussion.}
 \end{outline}
 
 % ---------------------------------------------------------------------------
@@ -95,7 +114,7 @@ An environment is therefore a task that artificial agents can already play.
 
 For an experiment with people, four properties of an environment matter.
 First, the observation that counts is the rendered frame: the image, and the sound if there is any, that a person perceives.
-Second, the environment is deterministic given its seed and its sequence of actions, so that any episode can be reconstructed exactly.
+Second, the environment is reproducible from its seed and its sequence of actions: replaying them gives the same game, exactly in its state and, in what a person perceives, within a stated tolerance (Section~\ref{sec:reproducibility}).
 Third, the meaning of each action is declared, so that the mapping from a person's input devices to actions can be written down and checked.
 Fourth, an environment that has a clock of its own declares its native rate, the number of steps per second at which it runs at its intended speed: an emulated home console runs at 60 frames per second, the Doom engine at 35 tics per second.
 
@@ -152,7 +171,7 @@ We distinguish three stepping regimes (Table~\ref{tab:regimes}, Figure~\ref{fig:
     \midrule
     Fixed-rate & every $n$ refresh periods, at $f = 1/(nT)$ steps per second & the controls held at the step & arcade, console, first-person, racing and browser games & implemented \\
     Turn-based & at the first flip after a decision & the decision & sliding-block, rule-rewriting and grid-world puzzles & implemented \\
-    Flip-locked & at each flip the task's script requests & a response and its reaction time, where the script waits for one & tasks written for PsychoPy or goxpyriment & planned; prototyped \\
+    Flip-locked & at each flip the task's script requests & a response and its reaction time, where the script waits for one & tasks written for PsychoPy or goxpyriment & designed; prototyped \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -171,7 +190,7 @@ Puzzles are played this way: sliding-block puzzles, rule-rewriting puzzles, grid
 Some environments contain stretches in which they accept no decision, such as an avatar asleep until its energy is restored.
 There, the environment says which action to apply, and the run steps it at a fixed rate, showing and recording every step, so that nothing is skipped and nothing is hidden.
 
-\paragraph{Flip-locked stepping (planned).}
+\paragraph{Flip-locked stepping (designed, not built).}
 Classical neuroimaging tasks are written as scripts for an experiment library, such as PsychoPy~\citep{peirce2019psychopy} or goxpyriment~\citep{pallier2026goxpyriment}.
 A script draws a screen, requests a flip, and waits, for a duration or for a response, before it draws the next one.
 Each flip the script requests can be taken as one step.
@@ -180,12 +199,11 @@ The script's own clock is the engine clock.
 With a participant, it is the real clock, so that engine time and human time coincide on the refresh grid.
 With an artificial agent, a virtual clock takes its place: a wait advances the clock without sleeping, a flip rounds the clock up to the next refresh, and a response arrives at the time its reaction time places it.
 Run this way, an unmodified script becomes an environment like the games, with the same record, the same replay and the same players.
-This regime is a design that the software does not implement yet.
-A prototype ran an unmodified PsychoPy card-sorting script flip by flip on a virtual clock, with two independent implementations of the clock and of the responses, and both wrote the same results file \TODO{report the prototype and its measurements in Section~\ref{sec:use-cases}}.
+\status{a design that the software does not implement yet. A prototype ran an unmodified PsychoPy card-sorting script flip by flip on a virtual clock, with two independent implementations of the clock and of the responses, and both wrote the same results file \TODO{report the prototype and its measurements in Section~\ref{sec:use-cases}}.}
 
 All three regimes produce the same object: a sequence of steps, each shown for a whole number of refresh periods, each stamped in human time, each with the action that produced the next.
 They differ only in what triggers the next step: a fixed schedule, the participant, or the task's script.
-A run already chains phases of different kinds, such as a fixation, instructions, a turn-based puzzle and a real-time game, and records them in one format; the flip-locked regime adds classical tasks to the same chain.
+A run already chains phases of different kinds, such as a fixation, instructions, a turn-based puzzle and a real-time game, and records them in one format; the flip-locked regime would add classical tasks to the same chain.
 
 \begin{figure}[t]
   \centering
@@ -257,17 +275,18 @@ The layer that presents an environment to a person may add an experimental frame
 
 Under these constraints, a model can be scored on exactly the episodes a participant played, by playing with the same seeds.
 It can also be given the participant's own observations and actions, step by step, to read out its internal states, which yields regressors for the neuroimaging data on the participant's engine time, mapped to human time by the run's record.
+Both uses rest on replay: the episodes a model is scored on, and the observations it is given, are those the participant's record reproduces (Section~\ref{sec:reproducibility}).
 
 \subsection{What a run records}
 \label{sec:record}
 
 Each of these properties is only as good as its record.
-For every step, a run writes its index, the action applied, the human time of the flip that showed it, the variables the environment reports (a score, a position, a game's internal state), and, at a chosen interval, a savestate from which the environment can be restored exactly.
-For every input event and every code sent to an acquisition device, it writes the human time at which it happened.
-For the run as a whole, it writes the full configuration (the definition of the task, the rig, the software versions and the machine) and the seeds (Section~\ref{sec:seeds}).
+A record has a core and optional streams.
+The core is what replay needs and what time alignment needs: the configuration of the run (the definition of the task, the rig, the software versions and the machine), the seed of every episode (Section~\ref{sec:seeds}), and, for every step, its index, the action applied and the human time of the flip that showed it, together with every input event and every code sent to an acquisition device, each with the human time at which it happened.
+The optional streams are copies of what replay can rebuild: the variables the environment reports (a score, a position, a game's internal state), savestates from which the environment can be restored exactly, and the frames and sound that were presented (Section~\ref{sec:what-to-record}).
 
 From this record, one can derive the onset and duration of every step and event, every reaction time, an events table in the Brain Imaging Data Structure~\citep{gorgolewski2016bids}, and, after replay, any variable of the environment at any step.
-Replay is part of the framework rather than a convenience: a run is reconstructed bit for bit in a separate process, from its seeds and actions or from its savestates, and the software tests this for every backend its test suite plays (Section~\ref{sec:replay}).
+Replay is part of the framework rather than a convenience: the replay of the core is the ground truth of what the participant experienced, and the optional streams are its witnesses (Section~\ref{sec:reproducibility}).
 A record is never overwritten: a run played again is written next to the first one, with the same seeds.
 
 The units of the record follow from the framework.
@@ -279,8 +298,8 @@ A session is the ordered list of runs a participant does in one visit.
 \subsection{Vocabulary}
 \label{sec:vocabulary}
 
-Table~\ref{tab:vocabulary} gathers the terms defined in this section.
-The software's documentation uses the same words, with the same meanings.
+Table~\ref{tab:vocabulary} gathers the terms defined in this section and in Section~\ref{sec:reproducibility}.
+The software's documentation uses the same words, with the same meanings \TODO{add the reproducibility terms to the documentation's concepts page}.
 
 \begin{table}[t]
   \centering
@@ -312,10 +331,209 @@ The software's documentation uses the same words, with the same meanings.
     participant, agent & A person, or an artificial policy, playing an environment. \\
     real clock, virtual clock & Wall time, for participants; a clock that advances only when the task says so, for agents, tests and replay. \\
     savestate & A snapshot from which an environment is restored exactly. \\
-    replay & Rebuilding a run's frames and states from its seeds and actions, or from its savestates. \\
+    core record & The configuration, the seeds, and every step's action and flip time: what replay and time alignment need. \\
+    replay & Rebuilding a run's states, frames and sound from its core record, or from its savestates; the ground truth of the run. \\
+    game state & What the environment computes and the participant acts on: positions, physics, scores, rewards, the end of each episode. \\
+    stimulus features & Measures of what the participant perceived, computed from frames and sound: luminance, motion, loudness. \\
+    divergence & The difference between a replay and its record, in game state or stimulus features; zero, or flagged and measured. \\
     \bottomrule
   \end{tabularx}
 \end{table}
+
+% ---------------------------------------------------------------------------
+\section{Recording and reproducibility}
+\label{sec:reproducibility}
+
+In a film experiment, the stimulus is a file that every participant sees.
+In a game, the stimulus is made by the participant while they play, and it exists afterwards only as far as the run can be rebuilt.
+This section defines what NeuroimaGym records, and what it means for a run to be reproducible, by what each level of reproduction allows an analysis to do.
+
+\subsection{The core record, replayed, is the ground truth}
+\label{sec:ground-truth}
+
+An environment is a function of its seed and its actions.
+A run that records the seed of each episode and the action of each step has therefore recorded the whole game, in a few bytes per step, and a replay rebuilds it: every state, every frame and every sound, at any step, including variables nobody thought to log.
+We take this replay as the ground truth of the run: the reference against which every other copy, a logged variable, a recorded frame or a model's input, is checked.
+A replay is to a game what the stimulus file is to a film.
+
+The choice is not obvious, and the alternative is to treat the recorded frames as the ground truth, as a screen recording would.
+A recording keeps only what was chosen in advance, at the resolution chosen in advance; it holds no internal state, so it cannot give the position of an off-screen opponent, the value a model computes from the state, or the game as it would have gone from a given step had the participant acted otherwise.
+A replay gives all three, and costs nothing to store.
+Its cost is elsewhere: it is only as good as the environment's determinism, which must therefore be tested, backend by backend, and its failures flagged (Section~\ref{sec:divergence}).
+
+\subsection{What to record}
+\label{sec:what-to-record}
+
+The core record (Section~\ref{sec:record}) is always written, since without it the run can neither be rebuilt nor aligned with the acquisition.
+Everything else is a copy, and copies have two uses: they let an analysis read a value without replaying, and they witness the replay, so that a divergence is caught by comparison rather than assumed away.
+What to keep is therefore a choice per study, between storage and convenience, except where replay is known to diverge: there, the copies are the only exact record and must be kept.
+
+For a participant, we recommend recording the run as it was shown: every flip of the run, not only those of its environments, from the window's point of view, so that fixations, instructions, pause menus, surveys and the screens between blocks are kept with the games, at the times they were shown.
+The participant's experience is the whole run, and the screens around a game are part of the stimulus an analysis of the brain recording has to model.
+For an artificial agent, the core record usually suffices, since the agent's run can be replayed at will.
+
+\status{today, a block's frames and sound are kept, every \code{frame\_stride}-th frame (0 keeps none), together with every variable the environment reports at every step and, where the backend has them, savestates; phases outside environments (fixations, messages, surveys) are logged as events with their flip times, not as images. A run records nearly everything by default.}
+\question{which streams are on by default, how a study chooses them (in the curriculum, which is shared by every rig, or in the rig file), and whether the run-as-shown recording is a stream of the run or a separate recorder of the window.}
+
+\subsection{Seeds}
+\label{sec:seeds}
+
+\begin{outline}
+  \item Every environment phase of a curriculum has a base seed, and episode $e$ of its block starts from that seed plus $e$; a restart from the pause menu carries on the count, so that the participant never plays the same episode twice by accident.
+  \item A phase can pin its seed in the curriculum: every participant, every session and every model then plays the same episodes.
+  \item Otherwise the run derives the seed from its name (participant, session, task, run) and the phase's position, as 31 bits of a SHA-256 hash: a different sequence of episodes for every participant, run and block, the same in every process and on every machine, and the same again when a run is played a second time.
+  \item The manifest records each phase's seed and whether it was pinned or derived, and each episode's start in the log records its own seed, so that an artificial agent can be given exactly the episodes a participant played.
+  \item What a seed controls differs from one backend to the next, and the paper should say it for each: a procedurally generated dungeon is a new layout per seed, whereas a racing game's track, grid and driveline are fixed and its seed changes only the contents of item boxes and the opponents' random draws, so that a policy that only steers sees the same race whatever the seed (Section~\ref{sec:stk}). An engine may also have more than one seed: the racing game draws its opponents once per launch from a seed of its own, besides the seed of each episode.
+  \item \status{implemented: base seeds pinned or derived, episode seeds, both recorded. \TODO{a column of Table~\ref{tab:backends} saying, per backend, what the seed determines, how many seeds the engine has, and whether any backend ignores one}.}
+  \item \question{whether a launch seed (an engine's seed outside \code{reset}) is part of the framework, recorded beside the episode seeds, or kept inside the backend.}
+\end{outline}
+
+\subsection{Levels of reproducibility, by what they allow}
+\label{sec:levels}
+
+Reproducibility is not one property.
+A replay can match its record in the state of the game, in what the participant perceived, or in every pixel and audio sample, and each of these allows different analyses.
+We define three levels by what they allow (Table~\ref{tab:levels}, Figure~\ref{fig:levels}), and require the first two.
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{Levels of reproducibility, by what they allow. A replay is compared with its record at each level; a level that is not met is flagged in the record with its measured divergence (Section~\ref{sec:divergence}).}
+  \label{tab:levels}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+    \toprule
+    Level & Compared & Allows & Criterion & Status \\
+    \midrule
+    1. Game state & Everything the environment computes and the participant acts on: positions, physics, scores, rewards, the end of each episode & Every behavioural and model-based analysis: regressors from any variable at any step, a model scored on the participant's episodes, branching from any step & Bit for bit; otherwise flagged, with the divergence measured & bit for bit tested on every backend the suite plays, except as noted in Section~\ref{sec:stk}; no flag yet \\
+    2. Stimulus features & What the participant perceived, summarised: luminance, contrast, motion, loudness, and the onsets of visual and sound events & Stimulus regressors and encoding models of perception, computed from the replay rather than from a stored video & Within a tolerance per feature, set below what the analysis can resolve & designed, not built \\
+    3. Pixels and samples & Every pixel of every frame and every audio sample & Byte-level checks; a replay that can stand in for the stored frames in any analysis, including ones not foreseen & Bit for bit; never required & tested on the machine that recorded the run; not across machines \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\paragraph{Level 1, game state, is required, and bit-for-bit where possible.}
+The game state is what the participant acted on and what every model-based analysis reads.
+A replay must reproduce it exactly, so that a variable read from the replay at step~$k$ is the variable the participant faced at step~$k$.
+Bit-for-bit identity is the criterion because it is the only one that needs no threshold: a single differing bit is caught, whereas a tolerance hides a slow drift until it changes the course of the game.
+Where an engine cannot be made exact, the divergence is not hidden but measured and recorded (Section~\ref{sec:divergence}), and the analyses it affects are named.
+
+\paragraph{Level 2, stimulus features, is required within a tolerance.}
+An analysis of the brain recording rarely uses pixels: it uses features of the stimulus, sampled far more coarsely than the frame rate and smoothed further by the haemodynamic response or by the analysis window.
+Frames can differ by a few bits across GPUs, drivers or builds while every feature an analysis uses is unchanged.
+We therefore require the replay to reproduce a set of stimulus features within a tolerance stated per feature and set below what the analysis resolves.
+Candidate features, low level first:
+\begin{itemize}[nosep]
+  \item Visual, global: mean luminance and its time course; root-mean-square contrast; colour statistics (mean chromaticity, a colour histogram); spatial frequency content, or edge density.
+  \item Visual, motion: optical flow (magnitude and direction), motion energy, the frame-to-frame difference; scene cuts and camera changes.
+  \item Visual, local: luminance in regions of the screen (quadrants, the fovea's likely position, the photodiode patch); a saliency map; the on-screen position and size of objects the environment reports (the avatar, opponents, items), projected through its camera.
+  \item Visual, symbolic: the text and numbers on the screen (a score, a timer), which the environment also reports as variables.
+  \item Auditory: the loudness envelope; the spectral envelope (band energies, or a mel spectrogram at the analysis' resolution); the onsets of sound events; stereo balance.
+  \item Higher level, from a fixed model: the activations of a fixed vision or audio network, a common source of regressors in encoding models, given a fixed model and fixed weights.
+\end{itemize}
+\question{which features are part of the framework's check, and which are left to analyses; how each tolerance is set (from the analysis' resolution, from the display's measured precision, or from the spread of the feature across repeated plays); and whether higher-level features belong here at all, since they depend on a model outside the framework.}
+
+\paragraph{Level 3, pixels and samples, is welcome but never required.}
+When frames and sound are identical, the replay can replace the stored stimulus in any analysis, including one not foreseen, and a byte comparison is the simplest test there is.
+Today's test suite uses it, and most backends meet it on the machine that recorded the run.
+It is not required, because what is drawn depends on more than the environment: on the graphics card, its driver and the build of the engine.
+A backend that renders with the graphics card of the machine can reproduce its game state exactly and still produce different pixels on another machine, or with another driver.
+
+\status{the suite compares replays at level 3, which implies levels 1 and 2 where it passes; no level-1 or level-2 comparison exists on its own, so a backend that differs only in its pixels fails the test as a whole (Section~\ref{sec:stk}).}
+\question{whether the check reports each level separately, so that a backend can pass level 1 and level 2 and fail level 3, and what the record says when it does.}
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[font=\scriptsize,
+      box/.style={draw,rounded corners=2pt,align=center,minimum height=0.9cm,text width=3.0cm},
+      note/.style={align=left,text width=5.4cm},
+      arr/.style={-{Stealth[length=2mm]}}]
+    \node[box,fill=gray!15] (core) at (0,0) {core record\\seeds, actions, flip times};
+    \node[box,fill=blue!12] (state) at (4.6,1.3) {1. game state\\positions, physics, rewards};
+    \node[box,fill=green!12] (feat) at (4.6,0) {2. stimulus features\\luminance, flow, loudness};
+    \node[box,fill=orange!12,dashed] (pix) at (4.6,-1.3) {3. pixels and samples};
+    \draw[arr] (core.east) -- node[above,sloped] {replay} (state.west);
+    \draw[arr] (core.east) -- (feat.west);
+    \draw[arr] (core.east) -- (pix.west);
+    \node[note,right=0.3cm of state] {required: bit for bit, or flagged\\allows: regressors, scoring models, branching};
+    \node[note,right=0.3cm of feat] {required: within a tolerance per feature\\allows: stimulus regressors, encoding models};
+    \node[note,right=0.3cm of pix] {welcome, never required\\allows: the replay in place of the stored frames};
+  \end{tikzpicture}
+  \caption{Schematic of the levels of reproducibility. The core record, replayed, rebuilds the run; the replay is compared with what the run recorded at three levels, each required to a different degree because each allows different analyses. Optional streams of the record (variables, frames, sound) are what the replay is compared with.}
+  \label{fig:levels}
+\end{figure}
+
+\subsection{Where determinism breaks}
+\label{sec:divergence}
+
+A program is deterministic in principle; in practice, several mechanisms break the link between a seed, a sequence of actions and the result, and they become more common as engines become larger.
+We list them because each needs a different remedy, and because a backend can be exact in its game state and inexact in its pixels, or the reverse.
+\begin{itemize}[nosep]
+  \item Randomness outside the seed: a generator seeded from the clock or from the operating system, or one the environment's seed does not reach; a second seed fixed at launch (Section~\ref{sec:seeds}).
+  \item Wall-clock time inside the game: an engine that advances its physics by the time elapsed since the last frame, rather than by a fixed step, makes its result depend on how fast the computer ran; a timeout or a timer measured in real time does the same.
+  \item The order of hashed collections, which in Python is fixed for the life of one interpreter and differs between processes, and in compiled engines can follow the addresses of objects in memory; a replay in the same process hides it.
+  \item Threads: physics, sound or artificial opponents computed on threads whose interleaving varies from one run to the next.
+  \item Floating-point arithmetic: the same computation compiled with different instructions (fused multiply-add, vector units), different optimisations or on another processor family gives results that differ in the last bits, and a chaotic system such as a physics simulation amplifies them over steps.
+  \item State that a reset does not restore: an engine that restarts an episode without rebuilding its world carries traces of the previous episode into the next.
+  \item The graphics card: shaders evaluated in floating point by a driver, with results that depend on the card, the driver and the build; this changes pixels but not, in a well-separated engine, the game state.
+  \item Browsers and asynchronous loading: timers, animation callbacks and assets that arrive in an order of their own.
+\end{itemize}
+Emulators of old consoles and environments written for reinforcement learning tend to be exact, because they were built to be; modern 3D engines and browser games tend not to be, because nothing required them to be.
+As the backends extend from the former to the latter, flagged divergence will become a common case rather than an exception, and the framework must treat it as data: a backend that cannot be made exact says so, the record says at which level and from which step its replay diverges and by how much, and the stored frames and variables of that backend become required streams rather than optional ones.
+\status{not built: today a divergence is found only by the test suite, as a failed test; the record holds no flag. \TODO{a flag in the record, per block, with the level and the measured divergence}.}
+
+\subsection{An example: SuperTuxKart}
+\label{sec:stk}
+
+The racing game SuperTuxKart, played through a Gymnasium environment built into the game \TODO{cite supertuxkart-gym}, shows the levels coming apart.
+Its documentation reports that a whole run reproduces bit for bit from the start of the game's process, in a different process on the same machine, but that two episodes in one process do not: restarting a race does not fully restore the physics world, and two episodes with the same seed and the same actions start 0.7~mm apart and drift to 2~cm over 300 steps, on one track \TODO{cite the supertuxkart-gym documentation; measure it ourselves for Figure~\ref{fig:divergence}}.
+The divergence is a reset that does not restore its state (Section~\ref{sec:divergence}), and the backend works around it by restarting the game before every episode but the first, at the cost of a pause for loading the track, after which each episode reproduces exactly at level 1 \TODO{the pause, measured}.
+The game draws its frames with the machine's graphics card, so its pixels are not expected to match across machines; on one of our machines, its replays do not match their record at level 3 \TODO{establish whether the game state matches there, which today's test cannot tell}.
+It is also the one backend that continuous integration cannot play, since a hosted runner has no display with graphics acceleration.
+Finally, its seed does little (Section~\ref{sec:seeds}): the documentation reports that a trained policy that only steers lapped one track in the same time over six seeds, and the game's own artificial drivers, which pick up items, in a range of six seconds \TODO{cite}.
+SuperTuxKart is therefore exact at level 1 with a remedy, undetermined at level 2, and inexact at level 3 across machines, which is the profile we expect of most modern 3D engines.
+
+\subsection{Checking a replay}
+\label{sec:replay}
+
+\begin{outline}
+  \item A block is rebuilt in a second process, from the seeds of its episodes and the actions of its steps, and compared with its record byte for byte: every frame's pixels, the variables logged, the reward, the end of each episode, and, where the block recorded sound, each frame's audio samples.
+  \item A second process, under another hash seed, because the usual cause of divergence is the order of hashed collections, fixed for the life of one interpreter: a backend that passes every check within one process can still diverge across processes.
+  \item Every savestate the block holds is restored and played on to the next one, so that a savestate is shown to be a point the episode can branch from, not merely bytes; the block's end state is restored and compared with its last frame; a resumed run replays too, and continues its predecessor exactly.
+  \item The test suite runs this on every backend it plays, and any run folder, a participant's included, can be checked the same way.
+  \item Planned: the same comparison reported per level (Table~\ref{tab:levels}), with level 2 computed from the replayed frames and sound and compared with the same features computed from the stored ones.
+  \item \status{implemented and tested at level 3 for every backend the suite plays, on one machine with one set of library versions; SuperTuxKart outside continuous integration, and failing at level 3 on one machine (Section~\ref{sec:stk}). Not tested: levels 1 and 2 on their own; replay across machines, operating systems and library versions, which we leave for later work.}
+\end{outline}
+
+\subsection{Quantifying reproducibility (planned)}
+\label{sec:quantification}
+
+\TODO{The measurements below are planned; none has been run for this paper.}
+The quantification should show, for each backend, at which level its replay matches and, where it does not, how the divergence grows with the number of steps.
+\begin{itemize}[nosep]
+  \item Table~\ref{tab:backends}, extended: per backend, what the seed determines, whether levels 1, 2 and 3 are met on one machine, whether it has savestates, and whether continuous integration plays it.
+  \item A divergence curve (Figure~\ref{fig:divergence}): for each backend, the distance between replay and record at each level, as a function of the step, on a logarithmic scale; an exact backend lies on the floor, a drifting one rises, and the tolerance of level 2 is drawn as a line. SuperTuxKart's episodes restarted in one process against those launched afresh give the first curve.
+  \item The sensitivity to the seed: for each backend, how much two episodes with different seeds and the same actions differ, at each level; this says what pinning or deriving a seed actually changes in what the participant sees.
+  \item The cost of the record: bytes per minute of the core record against the optional streams, per backend, to ground the choice of Section~\ref{sec:what-to-record}.
+\end{itemize}
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[x=1cm,y=1cm,font=\scriptsize]
+    % Schematic axes: no data, no numbers.
+    \draw[-{Stealth[length=2mm]}] (0,0) -- (7.2,0) node[below left] {step since reset};
+    \draw[-{Stealth[length=2mm]}] (0,0) -- (0,3.6) node[above,align=center] {divergence from the record\\(log scale)};
+    % The floor: an exact replay.
+    \draw[very thick,blue!70!black] (0,0.15) -- (7,0.15) node[above left] {exact (level 1 met)};
+    % A tolerance line for one stimulus feature.
+    \draw[dashed,green!50!black] (0,2.2) -- (7,2.2); \node[above right,green!50!black] at (0.1,2.2) {tolerance of a level-2 feature};
+    % A drifting episode: a reset that does not restore the world.
+    \draw[thick,red!70!black] (0,0.9) .. controls (2,1.1) and (4.5,1.9) .. (7,3.1) node[right] {restarted in one process};
+    % A pixel-only divergence: flat, above the floor, below the tolerance.
+    \draw[thick,orange!80!black] (0,1.4) -- (7,1.4) node[below left] {another graphics card (pixels only)};
+  \end{tikzpicture}
+  \caption{Schematic of the planned divergence curve, drawn by hand: it shows the shape of the figure, not data. An exact backend stays on the floor; a reset that does not restore its world drifts and may cross a feature's tolerance; a difference of graphics card shifts pixels by a constant, small amount and leaves the game state on the floor. \TODO{replace with the measured curves of Section~\ref{sec:quantification}}.}
+  \label{fig:divergence}
+\end{figure}
 
 % ---------------------------------------------------------------------------
 \section{Architecture}
@@ -329,42 +547,36 @@ The software's documentation uses the same words, with the same meanings.
   \item Tools that can run on their own stay outside the run: making and measuring a rig, calibrating a controller, recording the session's input devices, converting logs. The run only reads what they filed, at start-up.
   \item Checks at the desk: every problem that can be found before the participant's screen opens stops the run there, with the fix in the message; a default that changes what is recorded is printed and recorded, never silent.
   \item Install only what is needed: each backend is an optional extra, imported only when a curriculum names it.
-  \item Table: the 15 backends, their action spaces, how their savestates work, and their platforms \TODO{generate from the software's backend list}.
+  \item A backend is accepted once its block replays in a second process (Section~\ref{sec:replay}); under the levels of Section~\ref{sec:levels}, the acceptance becomes level 1 met or flagged, and level 2 met. \question{whether a backend that cannot meet level 1 at all is accepted, flagged, for participants.}
+  \item Table~\ref{tab:backends}: the 15 backends, their action spaces, their stepping regime, how their savestates work, their platforms, and their levels of reproducibility \TODO{generate from the software's backend list}.
 \end{outline}
 
+\begin{table}[t]
+  \centering
+  \small
+  \caption{\TODO{Placeholder, to be generated from the software's backend list and filled from measurements (Section~\ref{sec:quantification}).} The backends.}
+  \label{tab:backends}
+  \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X*{6}{c}@{}}
+    \toprule
+    Backend & What the seed determines & Regime & Savestate & CI & L1 & L2 & L3 \\
+    \midrule
+    \TODO{one row per backend} & & & & & & & \\
+    SuperTuxKart & item boxes, opponents' draws; opponents at launch & fixed-rate & none & no & with restart & ? & same machine \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
 % ---------------------------------------------------------------------------
-\section{Logging and reproducibility}
+\section{Logging}
 \label{sec:logging}
 
 \begin{outline}
-  \item The record of a run (Section~\ref{sec:record}) in files: a manifest with the full configuration, the versions and the machine; the run's log of everything read, shown, sent and printed; one log per block with every step, its frames and its sound.
+  \item The record of a run (Sections~\ref{sec:record} and~\ref{sec:what-to-record}) in files: a manifest with the full configuration, the versions and the machine; the run's log of everything read, shown, sent and printed; one log per block with every step, its frames and its sound.
   \item Written by a separate process and flushed every second, so that a crash loses at most the last second; nothing is ever overwritten, and a run played again goes to a new folder with the same seeds.
-  \item Savestates: the engine's own snapshot where it has one; otherwise the seed and the actions since the reset, restored by replaying them, which makes any deterministic environment restorable.
-  \item Provenance: every manifest names the code version (and whether it had uncommitted changes), the libraries and the machine.
-  \item Resuming: a curriculum belongs to the participant and a run to the acquisition; a run can stop anywhere, and a later run continues from the recorded state.
+  \item Savestates: the engine's own snapshot where it has one; otherwise the seed and the actions since the reset, restored by replaying them, which makes any environment that reproduces at level 1 restorable.
+  \item Provenance: every manifest names the code version (and whether it had uncommitted changes), the libraries and the machine; for a backend whose pixels depend on the graphics card, the card and its driver belong there too \TODO{check what the manifest records of the graphics stack}.
+  \item Resuming: a curriculum belongs to the participant and a run to the acquisition; a run can stop anywhere, and a later run continues from the recorded state, where the backend has a savestate.
   \item From logs to BIDS: events tables, a participants table, and readable timelines of each run, joined with the session's recording of the input devices.
-\end{outline}
-
-\subsection{Seeds}
-\label{sec:seeds}
-
-\begin{outline}
-  \item Every environment phase of a curriculum has a base seed, and episode $e$ of its block starts from that seed plus $e$; a restart from the pause menu carries on the count, so that the participant never plays the same episode twice by accident.
-  \item A phase can pin its seed in the curriculum: every participant, every session and every model then plays the same episodes.
-  \item Otherwise the run derives the seed from its name (participant, session, task, run) and the phase's position, as 31 bits of a SHA-256 hash: a different sequence of episodes for every participant, run and block, the same in every process and on every machine, and the same again when a run is played a second time.
-  \item The manifest records each phase's seed and whether it was pinned or derived, and each episode's start in the log records its own seed, so that an artificial agent can be given exactly the episodes a participant played.
-  \item \status{implemented: base seeds pinned or derived, episode seeds, both recorded. \TODO{per backend, what the seed determines (layout, opponents, randomness of the engine), and whether any backend ignores it}.}
-\end{outline}
-
-\subsection{Byte-identical replay}
-\label{sec:replay}
-
-\begin{outline}
-  \item A block is rebuilt in a second process, from the seeds of its episodes and the actions of its steps, and compared with its record byte for byte: every frame's pixels, the variables logged, the reward, the end of each episode, and, where the block recorded sound, each frame's audio samples.
-  \item A second process, under another hash seed, because the usual cause of divergence is the order of hashed collections, fixed for the life of one interpreter: a backend that passes every check within one process can still diverge across processes.
-  \item Every savestate the block holds is restored and played on to the next one, so that a savestate is shown to be a point the episode can branch from, not merely bytes; the block's end state is restored and compared with its last frame; a resumed run replays too, and continues its predecessor exactly.
-  \item The test suite runs this on every backend it plays, and any run folder, a participant's included, can be checked the same way.
-  \item \status{implemented and tested for every backend the suite plays, on one machine with one set of library versions. Not tested: replay across machines, operating systems and library versions \TODO{the experiment that would show it, and what it would take}.}
 \end{outline}
 
 % ---------------------------------------------------------------------------
@@ -379,7 +591,7 @@ The software's documentation uses the same words, with the same meanings.
   \item Sound: the game's own audio, each chunk placed a measured delay after its frame's flip.
   \item Input devices: keyboards, gamepads and MRI- and MEG-compatible controllers under one vocabulary of named controls~\citep{harel2023controller}; per-machine calibration of analogue sticks.
   \item A recording of every input device the operating system sees, for the whole session, with the system's own timestamps on the run's clock, plus focus changes and machine stalls.
-  \item Eye tracking \TODO{the current integration and its plan}.
+  \item Eye tracking \TODO{the current integration and its plan}. \question{whether gaze joins the record as a stream on the run's clock, which would make gaze-contingent stimulus features (luminance at the fovea) part of level 2.}
 \end{outline}
 
 \subsection{The rig measurement suite}
@@ -405,7 +617,7 @@ The software's documentation uses the same words, with the same meanings.
   \item Frame pacing and vertical synchronisation on the acquisition rigs: distribution of flip intervals, dropped frames \TODO{numbers from the long rig measurements (Section~\ref{sec:measurement})}.
   \item Flip-to-photon and audio latencies per rig, measured with a photodiode and a microphone \TODO{numbers}.
   \item Input latency: time of reading versus the operating system's timestamps \TODO{numbers from a session recording}.
-  \item Replay: every backend the test suite plays is replayed bit for bit in a second process (Section~\ref{sec:replay}) \TODO{backends, frames, mismatches}.
+  \item Reproducibility: the measurements of Section~\ref{sec:quantification} \TODO{backends, levels met, divergence curves}.
   \item Continuous integration: every backend that a Linux runner can play, every curriculum validated against its example rig.
 \end{outline}
 
@@ -417,17 +629,60 @@ The software's documentation uses the same words, with the same meanings.
   \item Games in fMRI and MEG sessions of a longitudinal study \TODO{sites, participants, sessions, games, hours}.
   \item Artificial agents on the participants' curricula: a random policy and a vision-language model playing the same environments, with the same record \TODO{results}.
   \item Classical tasks as environments: the flip-locked prototype on a card-sorting task \TODO{numbers from the prototype: flips, task time, computation time, results identical between two implementations}.
-  \item Replaying a participant's run through a model to obtain step-by-step regressors \TODO{an example}.
+  \item Replaying a participant's run through a model to obtain step-by-step regressors, and computing stimulus features from the replay rather than from stored frames \TODO{an example}.
 \end{outline}
+
+% ---------------------------------------------------------------------------
+\section{Status and roadmap}
+\label{sec:roadmap}
+
+This paper describes a framework and the software that is growing around it.
+Table~\ref{tab:roadmap} sets each part against what exists today, so that a reader can tell the principle from the implementation.
+\TODO{keep this table in step with the \code{status} notes of each section; it replaces them in the submitted version.}
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{What the framework proposes and what the software does today (read in its code, \TODO{commit}).}
+  \label{tab:roadmap}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.0cm}@{}}
+    \toprule
+    Part of the framework & Today & State \\
+    \midrule
+    Fixed-rate and turn-based stepping & 15 backends & built \\
+    Flip-locked stepping of classical scripts & a prototype on one PsychoPy task & designed \\
+    Core record: seeds, actions, flip times & every run & built \\
+    Optional streams chosen per study & frames at a stride per phase; everything else always written & partly \\
+    The run as shown, fixations and messages included & events only, no images & designed \\
+    Level 1, game state, checked on its own & checked only through level 3 & designed \\
+    Level 2, stimulus features within tolerance & none & designed \\
+    Level 3, pixels and samples & every backend the suite plays, one machine & built \\
+    Divergence flagged in the record & found by the test suite only & designed \\
+    Replay across machines and systems & not tested & later \\
+    Rig file, measurement suite, triggers, input recording, BIDS & every rig of the study & built \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
 
 % ---------------------------------------------------------------------------
 \section{Discussion}
 \label{sec:discussion}
 
 \begin{outline}
-  \item What the framework buys: one record and one replay for any screen-based task, and a translation between engine time and human time that is measured rather than assumed.
-  \item Limits: the refresh grid bounds the precision of every onset; consumer hardware and operating systems differ in timing; the flip-locked regime is not yet run with participants; replay is tested on one machine at a time; some backends need a real display, which complicates headless use.
-  \item Future work: the flip-locked regime for classical tasks; a schema of the rig file for the other programs that read it; more acquisition setups.
+  \item What the framework buys: one record and one replay for any screen-based task, a translation between engine time and human time that is measured rather than assumed, and a definition of reproducibility tied to what an analysis needs.
+  \item Limits: the refresh grid bounds the precision of every onset; consumer hardware and operating systems differ in timing; the flip-locked regime is not yet run with participants; replay is tested on one machine at a time; some backends need a real display, which complicates headless use; some engines will only ever be reproducible with a flag.
+  \item Future work: the flip-locked regime for classical tasks; level 1 and level 2 checks and a flag in the record; replay across machines; a schema of the rig file for the other programs that read it; more acquisition setups.
+\end{outline}
+
+\subsection{Anticipated objections}
+\label{sec:objections}
+
+\begin{outline}
+  \item ``Bit-exact replay is over-engineering: the participant saw what they saw, so record the screen.'' A screen recording holds no internal state, keeps only what was chosen in advance, and cannot branch; the replay gives the state at any step, the observations a model is given, and the game from any step on. We do record the frames as well, and in the backends where replay diverges they are the required record (Sections~\ref{sec:ground-truth} and~\ref{sec:what-to-record}).
+  \item ``Your bit-exact claim fails on your own 3D game, and is untested across machines.'' Hence the levels: bit-for-bit identity is required of the game state, where it is achievable with remedies; pixels are not required; perceptual features are required within a tolerance; and every failure is flagged and measured rather than hidden (Sections~\ref{sec:levels} and~\ref{sec:stk}). Cross-machine replay is left for later work, and said so.
+  \item ``Why bit for bit at all, rather than a tolerance?'' Because identity needs no threshold and catches every divergence, including ones that start in the last bit and grow; a tolerance is used only where identity is out of reach, and is then stated (Section~\ref{sec:levels}).
+  \item ``Your seeds are meaningless for some games.'' For some, they change little, and the paper says what each seed determines, per backend; pinned seeds still give a participant and a model identical draws (Section~\ref{sec:seeds}).
+  \item ``A framework described before it is built.'' The status of each part is stated, measured where it is built, and the planned parts are marked as such (Section~\ref{sec:roadmap}).
 \end{outline}
 
 \subsection{Related software}
@@ -435,6 +690,7 @@ The software's documentation uses the same words, with the same meanings.
 
 \begin{outline}
   \item Experiment libraries~\citep{peirce2019psychopy,pallier2026goxpyriment}, task collections for artificial networks~\citep{molanomazon2022neurogym}, game benchmarks~\citep{bellemare2013ale,kempka2016vizdoom,hafner2022crafter,samvelyan2021minihack,tomilin2023coom,cloos2024babaisai}; what NeuroimaGym adds to each, feature by feature (Table~\ref{tab:comparison}).
+  \item Reproducibility in reinforcement learning and in games: deterministic simulation and replay files in game engines, and the reproducibility of benchmark results \TODO{find and cite}.
 \end{outline}
 
 \begin{table}[t]
@@ -459,7 +715,8 @@ The software's documentation uses the same words, with the same meanings.
     Classical trial-based paradigms & p & ? & ? & ? & ? & ? & ? & ? & ? \\
     A record per step: action, flip time, reported variables & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
     Seeds recorded, derived per run or pinned for everyone & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
-    Bit-exact replay of a run in a separate process & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
+    Replay of a run in a separate process, checked against its record & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
+    Reproducibility levels, divergence flagged in the record & p & ? & ? & ? & ? & ? & ? & ? & ? \\
     Savestates; an interrupted run resumed where it stopped & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
     The same task played by artificial agents, with the same record & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
     Scanner trigger; MEG and EEG codes & \yes & ? & ? & ? & ? & ? & ? & ? & ? \\
