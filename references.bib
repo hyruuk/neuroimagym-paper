@@ -1,9 +1,18 @@
-% Every entry is copied from the page named in its comment.
-% An entry marked UNVERIFIED could not be read from its publisher's page (paywall, cookie or bot check): check it before submission.
+% references.bib of the NeuroimaGym paper: 71 entries.
+% The 22 entries of the draft come first, under their original keys; the entries of the research dossier follow.
+% Every entry names, in its comment, the page it was checked against on 26 or 27 Nov 2026 (PubMed, arXiv, the publisher).
+% What could not be checked is marked UNVERIFIED in that comment, and says what is missing.
+% Keys follow the authorYEARword style. Five keys changed since the export of 2026-11-26:
+%   harel2025gamer -> harel2026gamer, kemtur2023behavioral -> kemtur2026behavioral (published versions),
+%   robbins2021hed -> robbins2022hed (issue year), bewley2021hippo -> taylor2021hippo (wrong authors),
+%   gerstgrasser2021crowdplay -> gerstgrasser2022crowdplay (ICLR 2022).
 
 % --- Environments and benchmarks ---
 
-% https://arxiv.org/abs/2407.17032
+% https://arxiv.org/abs/2407.17032 (title, authors, and the note, which is the listing's Comments field; version 4 of 2 Nov 2025)
+% Proceedings version, seen in a search result on 2026-11-27 and not opened: Advances in Neural Information Processing
+% Systems 38 (NeurIPS 2025), Datasets and Benchmarks Track,
+% https://papers.neurips.cc/paper_files/paper/2025/hash/d7ff1795e8527f6443371c3933bdb52b-Abstract-Datasets_and_Benchmarks_Track.html
 @misc{towers2024gymnasium,
   author = {Towers, Mark and Kwiatkowski, Ariel and Terry, Jordan and Balis, John U. and De Cola, Gianluca and Deleu, Tristan and Goul{\~a}o, Manuel and Kallinteris, Andreas and Krimmel, Markus and KG, Arjun and Perez-Vicente, Rodrigo and Pierr{\'e}, Andrea and Schulhoff, Sander and Tai, Jun Jet and Tan, Hannah and Younis, Omar G.},
   title = {Gymnasium: A Standard Interface for Reinforcement Learning Environments},
@@ -39,7 +48,8 @@
   doi = {10.1613/jair.3912}
 }
 
-% https://arxiv.org/abs/1605.02097 (title, authors and venue; pages and DOI not verified)
+% https://arxiv.org/abs/1605.02097 (title, authors and venue, checked 2026-11-26)
+% UNVERIFIED: pages and DOI (the IEEE page did not open).
 @inproceedings{kempka2016vizdoom,
   author = {Kempka, Micha{\l} and Wydmuch, Marek and Runc, Grzegorz and Toczek, Jakub and Ja{\'s}kowski, Wojciech},
   title = {{ViZDoom}: A {Doom}-based {AI} Research Platform for Visual Reinforcement Learning},
@@ -98,11 +108,11 @@
   doi = {10.48550/arXiv.2407.13729}
 }
 
-% UNVERIFIED: the NeurIPS and OpenReview pages could not be read; from memory.
+% https://github.com/TTomilin/COOM (the citation block the repository gives)
 @inproceedings{tomilin2023coom,
   author = {Tomilin, Tristan and Fang, Meng and Zhang, Yudi and Pechenizkiy, Mykola},
   title = {{COOM}: A Game Benchmark for Continual Reinforcement Learning},
-  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023), Datasets and Benchmarks Track},
+  booktitle = {Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
   year = {2023}
 }
 
@@ -115,9 +125,9 @@
   doi = {10.31234/osf.io/aqc9n}
 }
 
-% UNVERIFIED: the Nature page could not be read; from memory.
+% https://pubmed.ncbi.nlm.nih.gov/25719670/ (checked 2026-11-27)
 @article{mnih2015dqn,
-  author = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Rusu, Andrei A. and Veness, Joel and Bellemare, Marc G. and Graves, Alex and Riedmiller, Martin and Fidjeland, Andreas K. and Ostrovski, Georg and others},
+  author = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Rusu, Andrei A. and Veness, Joel and Bellemare, Marc G. and Graves, Alex and Riedmiller, Martin and Fidjeland, Andreas K. and Ostrovski, Georg and Petersen, Stig and Beattie, Charles and Sadik, Amir and Antonoglou, Ioannis and King, Helen and Kumaran, Dharshan and Wierstra, Daan and Legg, Shane and Hassabis, Demis},
   title = {Human-level control through deep reinforcement learning},
   journal = {Nature},
   year = {2015},
@@ -129,7 +139,7 @@
 
 % --- Experiment software and data standards ---
 
-% UNVERIFIED: the Springer page could not be read; from memory.
+% https://pmc.ncbi.nlm.nih.gov/articles/PMC6420413 (checked 2026-11-26)
 @article{peirce2019psychopy,
   author = {Peirce, Jonathan and Gray, Jeremy R. and Simpson, Sol and MacAskill, Michael and H{\"o}chenberger, Richard and Sogo, Hiroyuki and Kastman, Erik and Lindel{\o}v, Jonas Kristoffer},
   title = {{PsychoPy2}: Experiments in behavior made easy},
@@ -153,7 +163,7 @@
   doi = {10.48550/arXiv.2604.15245}
 }
 
-% UNVERIFIED: the PeerJ page refused the fetch; from memory.
+% https://peerj.com/articles/9414.pdf (checked 2026-11-26)
 @article{bridges2020timing,
   author = {Bridges, David and Pitiot, Alain and MacAskill, Michael R. and Peirce, Jonathan W.},
   title = {The timing mega-study: comparing a range of experiment generators, both lab-based and online},
@@ -164,9 +174,9 @@
   doi = {10.7717/peerj.9414}
 }
 
-% UNVERIFIED: the Nature page could not be read; from memory.
+% https://pubmed.ncbi.nlm.nih.gov/27326542/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC4978148 (checked 2026-11-27)
 @article{gorgolewski2016bids,
-  author = {Gorgolewski, Krzysztof J. and Auer, Tibor and Calhoun, Vince D. and Craddock, R. Cameron and Das, Samir and Duff, Eugene P. and Flandin, Guillaume and Ghosh, Satrajit S. and Glatard, Tristan and Halchenko, Yaroslav O. and others},
+  author = {Gorgolewski, Krzysztof J. and Auer, Tibor and Calhoun, Vince D. and Craddock, R. Cameron and Das, Samir and Duff, Eugene P. and Flandin, Guillaume and Ghosh, Satrajit S. and Glatard, Tristan and Halchenko, Yaroslav O. and Handwerker, Daniel A. and Hanke, Michael and Keator, David and Li, Xiangrui and Michael, Zachary and Maumet, Camille and Nichols, B. Nolan and Nichols, Thomas E. and Pellman, John and Poline, Jean-Baptiste and Rokem, Ariel and Schaefer, Gunnar and Sochat, Vanessa and Triplett, William and Turner, Jessica A. and Varoquaux, Ga{\"e}l and Poldrack, Russell A.},
   title = {The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments},
   journal = {Scientific Data},
   year = {2016},
@@ -177,7 +187,7 @@
 
 % --- Naturalistic and game-based neuroimaging ---
 
-% UNVERIFIED: the Elsevier page could not be read; from memory.
+% https://pubmed.ncbi.nlm.nih.gov/31257145/ (checked 2026-11-27; the abstract only was read)
 @article{sonkusare2019naturalistic,
   author = {Sonkusare, Saurabh and Breakspear, Michael and Guo, Christine},
   title = {Naturalistic stimuli in neuroscience: critically acclaimed},
@@ -189,7 +199,7 @@
   doi = {10.1016/j.tics.2019.05.004}
 }
 
-% UNVERIFIED: the Elsevier page could not be read; from memory.
+% https://pubmed.ncbi.nlm.nih.gov/32800992/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC7789034 (checked 2026-11-27)
 @article{nastase2020keepitreal,
   author = {Nastase, Samuel A. and Goldstein, Ariel and Hasson, Uri},
   title = {Keep it real: rethinking the primacy of experimental control in cognitive neuroscience},
@@ -200,7 +210,7 @@
   doi = {10.1016/j.neuroimage.2020.117254}
 }
 
-% UNVERIFIED: the Elsevier and PubMed pages could not be read; from memory.
+% https://pubmed.ncbi.nlm.nih.gov/33326755/ (checked 2026-11-27)
 @article{cross2021deep,
   author = {Cross, Logan and Cockburn, Jeff and Yue, Yisong and O'Doherty, John P.},
   title = {Using deep reinforcement learning to reveal how the brain encodes abstract state-space representations in high-dimensional environments},
@@ -208,11 +218,11 @@
   year = {2021},
   volume = {109},
   number = {4},
-  pages = {724--738},
+  pages = {724--738.e7},
   doi = {10.1016/j.neuron.2020.11.021}
 }
 
-% https://pubmed.ncbi.nlm.nih.gov/?term=neural+architecture+of+theory-based+reinforcement+learning (initials only on that page)
+% https://pubmed.ncbi.nlm.nih.gov/36898374/ (checked 2026-11-27)
 @article{tomov2023neural,
   author = {Tomov, Momchil S. and Tsividis, Pedro A. and Pouncy, Thomas and Tenenbaum, Joshua B. and Gershman, Samuel J.},
   title = {The neural architecture of theory-based reinforcement learning},
@@ -236,7 +246,7 @@
   doi = {10.48550/arXiv.2107.12544}
 }
 
-% https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0290158
+% https://pubmed.ncbi.nlm.nih.gov/37910557/ and https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0290158
 @article{harel2023controller,
   author = {Harel, Yann and Cyr, Andr{\'e} and Boyle, Julie and Pinsard, Basile and Bernard, Jeremy and Fourcade, Marie-France and Aggarwal, Himanshu and Ponce, Ana Fernanda and Thirion, Bertrand and Jerbi, Karim and Bellec, Pierre},
   title = {Open design of a reproducible videogame controller for {MRI} and {MEG}},
@@ -255,4 +265,619 @@
   booktitle = {Conference on Cognitive Computational Neuroscience (CCN 2025)},
   year = {2025},
   url = {https://2025.ccneuro.org/abstract_pdf/Boyle_2025_CNeuroMod_Data_Collection_Complete_200h_individual.pdf}
+}
+
+% ===========================================================================
+% Entries added from the research dossier. keywords = the dossier's argument
+% group and grade, plus search aliases.
+% ===========================================================================
+
+% --- Why games ---
+
+% https://pubmed.ncbi.nlm.nih.gov/38907029/ (checked 2026-11-27)
+@article{allen2024games,
+  author = {Allen, Kelsey and Br{\"a}ndle, Franziska and Botvinick, Matthew and Fan, Judith E. and Gershman, Samuel J. and Gopnik, Alison and Griffiths, Thomas L. and Hartshorne, Joshua K. and Hauser, Tobias U. and Ho, Mark K. and de Leeuw, Joshua R. and Ma, Wei Ji and Murayama, Kou and Nelson, Jonathan D. and van Opheusden, Bas and Pouncy, Thomas and Rafner, Janet and Rahwan, Iyad and Rutledge, Robb B. and Sherson, Jacob and {\c{S}}im{\c{s}}ek, {\"O}zg{\"u}r and Spiers, Hugo and Summerfield, Christopher and Thalmann, Mirko and V{\'e}lez, Natalia and Watrous, Andrew J. and Tenenbaum, Joshua B. and Schulz, Eric},
+  title = {Using games to understand the mind},
+  journal = {Nature Human Behaviour},
+  year = {2024},
+  volume = {8},
+  number = {6},
+  doi = {10.1038/s41562-024-01878-9},
+  pages = {1035--1043},
+  keywords = {dossier: why games; grade: A}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/16628606/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC6871426
+@article{mathiak2006toward,
+  author = {Mathiak, Klaus and Weber, Ren{\'e}},
+  title = {Toward brain correlates of natural behavior: {fMRI} during violent video games},
+  journal = {Human Brain Mapping},
+  year = {2006},
+  volume = {27},
+  number = {12},
+  pages = {948--956},
+  doi = {10.1002/hbm.20234},
+  keywords = {dossier: why games; grade: C}
+}
+
+% --- Precedents: games in the scanner, models of players ---
+
+% https://pubmed.ncbi.nlm.nih.gov/42238756/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC13228873 (checked 2026-11-27)
+% Published version of the PsyArXiv preprint (key harel2025gamer in earlier files).
+@article{harel2026gamer,
+  author = {Harel, Yann and Pinsard, Basile and Boyle, Julie and Borghesani, Valentina and Le Clei, Maximilien and Mignot, Paul-Henri and St-Laurent, Marie and Jerbi, Karim and Bellec, Lune},
+  title = {Gamer in the scanner: Event-related analysis of {fMRI} activity during retro videogame play guided by automated annotations of game content},
+  journal = {Imaging Neuroscience},
+  year = {2026},
+  volume = {4},
+  doi = {10.1162/IMAG.a.1256},
+  note = {Preprint: PsyArXiv \doi{10.31234/osf.io/uakq9}},
+  keywords = {dossier: precedents; grade: A; Shinobi; CNeuroMod}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/42440925/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC13334379 (checked 2026-11-27)
+% Published version of the bioRxiv preprint (key kemtur2023behavioral in earlier files).
+@article{kemtur2026behavioral,
+  author = {Kemtur, Anirudha and Paugam, Fran{\c{c}}ois and Pinsard, Basile and Harel, Yann and Sainath, Pravish and Le Clei, Maximilien and Boyle, Julie and Jerbi, Karim and Bellec, Lune},
+  title = {Behavioral imitation with artificial neural networks leads to personalized models of brain dynamics during videogame play},
+  journal = {Imaging Neuroscience},
+  year = {2026},
+  volume = {4},
+  doi = {10.1162/IMAG.a.1286},
+  note = {Preprint: bioRxiv \doi{10.1101/2023.10.28.564546}},
+  keywords = {dossier: precedents; grade: B; imitation learning; Shinobi}
+}
+
+% https://arxiv.org/abs/2605.19352 (version 2 of 7 Oct 2026; checked 2026-11-27)
+@misc{oota2026brain,
+  author = {Oota, Subba Reddy and Khandelwal, Anant and Pahwa, Khushbu and Namburi, Satya Sai Srinath and Chakraborty, Tanmoy and Raju, Bapi S. and Gupta, Manish},
+  title = {Brain alignment of reasoning and action representations from vision-language and action models during naturalistic gameplay},
+  year = {2026},
+  eprint = {2605.19352},
+  archivePrefix = {arXiv},
+  primaryClass = {q-bio.NC},
+  doi = {10.48550/arXiv.2605.19352},
+  keywords = {dossier: precedents; grade: B; VLM; brain alignment; Atari-style games (VGDL)}
+}
+
+% Authors from the bioRxiv record of 10.1101/2025.11.28.691119 (initials only for the fourth author).
+% UNVERIFIED: the eLife volume, article number and DOI, seen in a search result; the eLife page did not open.
+@article{paugam2026brittle,
+  author = {Paugam, Fran{\c{c}}ois and Pinsard, Basile and St-Laurent, Marie and Lajoie, G. and Bellec, Lune},
+  title = {Training neural networks from scratch in a videogame leads to brittle brain encoding},
+  journal = {eLife},
+  year = {2026},
+  volume = {15},
+  pages = {RP110830},
+  doi = {10.7554/eLife.110830.1},
+  note = {Reviewed preprint; bioRxiv \doi{10.1101/2025.11.28.691119}},
+  keywords = {dossier: precedents; grade: B; Super Mario Bros; CNeuroMod}
+}
+
+% https://arxiv.org/pdf/2605.08019 (version 1 of 8 May 2026; authors as printed; checked 2026-11-27)
+@misc{csaba2026reason,
+  author = {Csaba, Botos and Kumar, Sreejan and Tudor, Austin and Andrews, David and Hunt, Laurence and Summerfield, Chris and Tenenbaum, Joshua B. and Costa, Rui Ponte and Mattar, Marcelo G. and Tomov, Momchil},
+  title = {Reason to Play: Behavioral and Brain Alignment Between Frontier {LRMs} and Human Game Learners},
+  year = {2026},
+  eprint = {2605.08019},
+  archivePrefix = {arXiv},
+  doi = {10.48550/arXiv.2605.08019},
+  primaryClass = {cs.AI},
+  keywords = {dossier: precedents; grade: A; VGDL; large reasoning models; brain alignment}
+}
+
+% https://arxiv.org/abs/1903.06754 (title, authors; the copyright line of the PDF reads "2020, Association for the
+% Advancement of Artificial Intelligence")
+% UNVERIFIED: volume and pages of the proceedings.
+@inproceedings{zhang2020atarihead,
+  author = {Zhang, Ruohan and Walshe, Calen and Liu, Zhuode and Guan, Lin and Muller, Karl S. and Whritner, Jake A. and Zhang, Luxin and Hayhoe, Mary M. and Ballard, Dana H.},
+  title = {{Atari-HEAD}: Atari Human Eye-Tracking and Demonstration Dataset},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  year = {2020},
+  eprint = {1903.06754},
+  archivePrefix = {arXiv},
+  keywords = {dossier: precedents; grade: C; eye tracking}
+}
+
+% --- Timing, synchronisation, experiment software ---
+
+% https://pubmed.ncbi.nlm.nih.gov/40959706/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC12434378 (checked 2026-11-27)
+@article{kothe2025lsl,
+  author = {Kothe, Christian and Shirazi, Seyed Yahya and Stenner, Tristan and Medine, David and Boulay, Chadwick and Grivich, Matthew I. and Artoni, Fiorenzo and Mullen, Tim and Delorme, Arnaud and Makeig, Scott},
+  title = {The lab streaming layer for synchronized multimodal recording},
+  journal = {Imaging Neuroscience},
+  year = {2025},
+  doi = {10.1162/IMAG.a.136},
+  volume = {3},
+  keywords = {dossier: timing and sync; grade: A; LSL; Software Toolbox article}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/23640111/ (checked 2026-11-27)
+@article{plant2013millisecond,
+  author = {Plant, Richard R. and Quinlan, Philip T.},
+  title = {Could millisecond timing errors in commonly used equipment be a cause of replication failure in some neuroscience studies?},
+  journal = {Cognitive, Affective, \& Behavioral Neuroscience},
+  year = {2013},
+  volume = {13},
+  pages = {598--614},
+  doi = {10.3758/s13415-013-0166-6},
+  number = {3},
+  keywords = {dossier: timing and sync; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/9176952/ (checked 2026-11-27; the record gives initials only)
+@article{brainard1997psychophysics,
+  author = {Brainard, D. H.},
+  title = {The Psychophysics Toolbox},
+  journal = {Spatial Vision},
+  year = {1997},
+  volume = {10},
+  number = {4},
+  pages = {433--436},
+  doi = {10.1163/156856897X00357},
+  keywords = {dossier: timing and sync; grade: C; Psychtoolbox}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/22083660/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC3356517 (checked 2026-11-27)
+@article{mathot2012opensesame,
+  author = {Math{\^o}t, Sebastiaan and Schreij, Daniel and Theeuwes, Jan},
+  title = {{OpenSesame}: An open-source, graphical experiment builder for the social sciences},
+  journal = {Behavior Research Methods},
+  year = {2012},
+  volume = {44},
+  pages = {314--324},
+  doi = {10.3758/s13428-011-0168-7},
+  number = {2},
+  keywords = {dossier: timing and sync; grade: C}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/24142834/ (checked 2026-11-27)
+@article{krause2014expyriment,
+  author = {Krause, Florian and Lindemann, Oliver},
+  title = {Expyriment: A {Python} library for cognitive and neuroscientific experiments},
+  journal = {Behavior Research Methods},
+  year = {2014},
+  volume = {46},
+  pages = {416--428},
+  doi = {10.3758/s13428-013-0390-6},
+  number = {2},
+  keywords = {dossier: timing and sync; grade: C}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/27199843/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC4844768 (checked 2026-11-27)
+@article{sochat2016experiment,
+  author = {Sochat, Vanessa V. and Eisenberg, Ian W. and Enkavi, A. Zeynep and Li, Jamie and Bissett, Patrick G. and Poldrack, Russell A.},
+  title = {The Experiment Factory: Standardizing Behavioral Experiments},
+  journal = {Frontiers in Psychology},
+  year = {2016},
+  volume = {7},
+  pages = {610},
+  doi = {10.3389/fpsyg.2016.00610},
+  keywords = {dossier: timing and sync; grade: C}
+}
+
+% --- Agent interfaces, human-agent platforms, game benchmarks ---
+
+% https://pubmed.ncbi.nlm.nih.gov/31351974/ (checked 2026-11-27); the text read was the preprint, https://www.biorxiv.org/content/10.1101/434944v3
+@article{watson2019use,
+  author = {Watson, Marcus R. and Voloh, Benjamin and Thomas, Christopher and Hasan, Asif and Womelsdorf, Thilo},
+  title = {{USE}: An integrative suite for temporally-precise psychophysical experiments in virtual environments for human, nonhuman, and artificially intelligent agents},
+  journal = {Journal of Neuroscience Methods},
+  year = {2019},
+  volume = {326},
+  pages = {108374},
+  doi = {10.1016/j.jneumeth.2019.108374},
+  keywords = {dossier: agents; grade: A; USE; Unified Suite for Experiments; Unity}
+}
+
+% https://arxiv.org/abs/2411.13543v2
+@inproceedings{paglieri2025balrog,
+  author = {Paglieri, Davide and Cupia{\l}, Bart{\l}omiej and Coward, Samuel and Piterbarg, Ulyana and Wo{\l}czyk, Maciej and Khan, Akbir and Pignatelli, Eduardo and Kuci{\'n}ski, {\L}ukasz and Pinto, Lerrel and Fergus, Rob and Foerster, Jakob Nicolaus and Parker-Holder, Jack and Rockt{\"a}schel, Tim},
+  title = {{BALROG}: Benchmarking Agentic {LLM} and {VLM} Reasoning On Games},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year = {2025},
+  eprint = {2411.13543},
+  archivePrefix = {arXiv},
+  doi = {10.48550/arXiv.2411.13543},
+  keywords = {dossier: agents; grade: A; Crafter; Baba Is AI; MiniHack; NetHack}
+}
+
+% https://papers.cool/arxiv/2602.17594 and https://arxiv.org/abs/2602.17594?context=cs
+@misc{ying2026aigamestore,
+  author = {Ying, Lance and Truong, Ryan and Sharma, Prafull and Zhao, Kaiya Ivy and Cloos, Nathan and Allen, Kelsey R. and Griffiths, Thomas L. and Collins, Katherine M. and Hern{\'a}ndez-Orallo, Jos{\'e} and Isola, Phillip and Gershman, Samuel J. and Tenenbaum, Joshua B.},
+  title = {{AI} Gamestore: Scalable, Open-Ended Evaluation of Machine General Intelligence with Human Games},
+  year = {2026},
+  eprint = {2602.17594},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  doi = {10.48550/arXiv.2602.17594},
+  keywords = {dossier: agents; grade: A; AI GameStore; aigamestore backend}
+}
+
+% https://arxiv.org/abs/2505.18134 (version 3; authors checked against the PDF on 2026-11-27)
+@misc{zhang2025videogamebench,
+  author = {Zhang, Alex L. and Griffiths, Thomas L. and Narasimhan, Karthik R. and Press, Ofir},
+  title = {{VideoGameBench}: Can Vision-Language Models complete popular video games?},
+  year = {2025},
+  eprint = {2505.18134},
+  archivePrefix = {arXiv},
+  doi = {10.48550/arXiv.2505.18134},
+  keywords = {dossier: agents; grade: A; lockstep; VideoGameBench Lite}
+}
+
+% https://2025.ccneuro.org/abstract_pdf/Steinkamp_2025_rewardGym_-_framework_streamlining_experiments_cognitive.pdf
+@inproceedings{steinkamp2025rewardgym,
+  author = {Steinkamp, Simon R. and Meder, David and Hulme, Oliver J.},
+  title = {{rewardGym} -- a framework for streamlining experiments in cognitive neuroscience},
+  booktitle = {Conference on Cognitive Computational Neuroscience (CCN)},
+  year = {2025},
+  url = {https://2025.ccneuro.org/abstract_pdf/Steinkamp_2025_rewardGym_-_framework_streamlining_experiments_cognitive.pdf},
+  keywords = {dossier: agents; grade: B; PsychoPy; Gymnasium; BIDS}
+}
+
+% https://arxiv.org/pdf/2604.15044
+@misc{mcdonald2026cogrid,
+  author = {McDonald, Chase and Gonzalez, Cleotilde},
+  title = {{CoGrid} \& the {Multi-User Gymnasium}: A Framework for Multi-Agent Experimentation},
+  year = {2026},
+  eprint = {2604.15044},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.HC},
+  doi = {10.48550/arXiv.2604.15044},
+  keywords = {dossier: agents; grade: B; MUG; browser experiments; human-AI}
+}
+
+% https://arxiv.org/abs/2206.03312 (checked 2026-11-27)
+@misc{juliani2022neuronav,
+  author = {Juliani, Arthur and Barnett, Samuel and Davis, Brandon and Sereno, Margaret and Momennejad, Ida},
+  title = {{Neuro-Nav}: A Library for Neurally-Plausible Reinforcement Learning},
+  year = {2022},
+  eprint = {2206.03312},
+  archivePrefix = {arXiv},
+  keywords = {dossier: agents; grade: B}
+}
+
+% https://jair.org/index.php/jair/article/view/11182 (checked 2026-11-27)
+@article{machado2018revisiting,
+  author = {Machado, Marlos C. and Bellemare, Marc G. and Talvitie, Erik and Veness, Joel and Hausknecht, Matthew and Bowling, Michael},
+  title = {Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents},
+  journal = {Journal of Artificial Intelligence Research},
+  year = {2018},
+  volume = {61},
+  pages = {523--562},
+  doi = {10.1613/jair.5699},
+  keywords = {dossier: agents; grade: B; sticky actions; ALE}
+}
+
+% https://arxiv.org/abs/2501.19245 (version 2 of 3 Feb 2025; checked 2026-11-27; abstract only read)
+@misc{aydin2025sharpie,
+  author = {Ayd{\i}n, H{\"u}seyin and Godin-Dubois, Kevin and {Goncalvez Braz}, Libio and den Hengst, Floris and Baraka, Kim and {\c{C}}elikok, Mustafa Mert and Sauter, Andreas and Wang, Shihan and Oliehoek, Frans A.},
+  title = {{SHARPIE}: A Modular Framework for Reinforcement Learning and Human-{AI} Interaction Experiments},
+  year = {2025},
+  eprint = {2501.19245},
+  archivePrefix = {arXiv},
+  keywords = {dossier: agents; grade: C; human-AI; Gymnasium wrapper}
+}
+
+% https://arxiv.org/abs/2102.02639 (checked 2026-11-27; abstract only read)
+% Replaces the entry bewley2021hippo of earlier files, whose authors and title matched no page.
+@misc{taylor2021hippo,
+  author = {Taylor, Matthew E. and Nissen, Nicholas and Wang, Yuan and Navidi, Neda},
+  title = {Improving Reinforcement Learning with Human Assistance: An Argument for Human Subject Studies with {HIPPO Gym}},
+  year = {2021},
+  eprint = {2102.02639},
+  archivePrefix = {arXiv},
+  doi = {10.48550/arXiv.2102.02639},
+  keywords = {dossier: agents; grade: C; human-in-the-loop}
+}
+
+% Title, authors and venue from the ICLR 2022 conference page, seen as a search result.
+% UNVERIFIED: first names; the OpenReview page (https://openreview.net/forum?id=qyTBxTztIpQ) did not open.
+@inproceedings{gerstgrasser2022crowdplay,
+  author = {Gerstgrasser, M. and Trivedi, R. and Parkes, D. C.},
+  title = {{CrowdPlay}: Crowdsourcing Human Demonstrations for Offline Learning},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year = {2022},
+  url = {https://openreview.net/forum?id=qyTBxTztIpQ},
+  keywords = {dossier: agents; grade: C; human demonstrations}
+}
+
+% Title, venue, pages and DOI from library catalogue records; the IEEE page did not open. The abstract only was read.
+@inproceedings{schaul2013vgdl,
+  author = {Schaul, Tom},
+  title = {A video game description language for model-based or interactive learning},
+  booktitle = {2013 IEEE Conference on Computational Intelligence in Games (CIG)},
+  year = {2013},
+  doi = {10.1109/CIG.2013.6633610},
+  pages = {1--8},
+  keywords = {dossier: agents; grade: C; backend credit; VGDL}
+}
+
+% https://arcprize.org/media/ARC_AGI_3_Technical_Report.pdf (read 2026-11-27; the author line is the Foundation)
+@techreport{arcprize2026arcagi3,
+  author = {{ARC Prize Foundation}},
+  title = {{ARC-AGI-3}: A New Challenge for Frontier Agentic Intelligence},
+  institution = {ARC Prize Foundation},
+  year = {2026},
+  month = apr,
+  url = {https://arcprize.org/media/ARC_AGI_3_Technical_Report.pdf},
+  keywords = {dossier: agents; grade: C; backend credit}
+}
+
+% --- NeuroAI, brain models, the DBP ---
+
+% https://www.fo-rothschild.fr/sites/default/files/2026-07/DigitalBrainProject-Scaling-PressRelease_EN_1.pdf (read 2026-11-27)
+@misc{dbp2026press,
+  author = {{Rothschild Hospital Foundation}},
+  title = {The {Digital Brain Project}: {Rothschild Hospital Foundation} announces inaugural research cohort and program expansion to model the human brain},
+  year = {2026},
+  month = jul,
+  note = {Press release, Paris, 30 July 2026},
+  howpublished = {\url{https://www.fo-rothschild.fr/sites/default/files/2026-07/DigitalBrainProject-Scaling-PressRelease_EN_1.pdf}},
+  keywords = {dossier: impact; grade: A; DBP}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/36949048/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC10033876 (checked 2026-11-27)
+@article{zador2023catalyzing,
+  author = {Zador, Anthony and Escola, Sean and Richards, Blake and {\"O}lveczky, Bence and Bengio, Yoshua and Boahen, Kwabena and Botvinick, Matthew and Chklovskii, Dmitri and Churchland, Anne and Clopath, Claudia and DiCarlo, James and Ganguli, Surya and Hawkins, Jeff and K{\"o}rding, Konrad and Koulakov, Alexei and LeCun, Yann and Lillicrap, Timothy and Marblestone, Adam and Olshausen, Bruno and Pouget, Alexandre and Savin, Cristina and Sejnowski, Terrence and Simoncelli, Eero and Solla, Sara and Sussillo, David and Tolias, Andreas S. and Tsao, Doris},
+  title = {Catalyzing next-generation Artificial Intelligence through {NeuroAI}},
+  journal = {Nature Communications},
+  year = {2023},
+  volume = {14},
+  pages = {1597},
+  doi = {10.1038/s41467-023-37180-x},
+  number = {1},
+  keywords = {dossier: impact; grade: A}
+}
+
+% https://arxiv.org/abs/2507.22229 (version 1 of 29 Jul 2025; authors checked against the PDF on 2026-11-27)
+@misc{dascoli2025tribe,
+  author = {d'Ascoli, St{\'e}phane and Rapin, J{\'e}r{\'e}my and Benchetrit, Yohann and Banville, Hubert and King, Jean-R{\'e}mi},
+  title = {{TRIBE}: {TRImodal} Brain Encoder for whole-brain {fMRI} response prediction},
+  year = {2025},
+  eprint = {2507.22229},
+  archivePrefix = {arXiv},
+  keywords = {dossier: impact; grade: B; Algonauts 2025 winner}
+}
+
+% https://arxiv.org/abs/2605.04326 (authors checked against the PDF on 2026-11-27) and
+% https://ai.meta.com/research/publications/a-foundation-model-of-vision-audition-and-language-for-in-silico-neuroscience/
+@misc{dascoli2026tribev2,
+  author = {d'Ascoli, St{\'e}phane and Rapin, J{\'e}r{\'e}my and Benchetrit, Yohann and Brooks, Teon and Begany, Katelyn and Raugel, Josephine and Banville, Hubert and King, Jean-R{\'e}mi},
+  title = {A foundation model of vision, audition, and language for in-silico neuroscience},
+  year = {2026},
+  eprint = {2605.04326},
+  archivePrefix = {arXiv},
+  primaryClass = {q-bio.NC},
+  keywords = {dossier: impact; grade: C; TRIBE v2; in-silico experiments}
+}
+
+% https://arxiv.org/abs/2501.00504 (checked 2026-11-27)
+@misc{gifford2025algonauts,
+  author = {Gifford, Alessandro T. and Bersch, Domenic and St-Laurent, Marie and Pinsard, Basile and Boyle, Julie and Bellec, Lune and Oliva, Aude and Roig, Gemma and Cichy, Radoslaw M.},
+  title = {The {Algonauts} Project 2025 Challenge: How the Human Brain Makes Sense of Multimodal Movies},
+  year = {2025},
+  eprint = {2501.00504},
+  archivePrefix = {arXiv},
+  keywords = {dossier: impact; grade: B; CNeuroMod}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/40604288/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832 (checked 2026-11-27)
+@article{binz2025centaur,
+  author = {Binz, Marcel and Akata, Elif and Bethge, Matthias and Br{\"a}ndle, Franziska and Callaway, Fred and Coda-Forno, Julian and Dayan, Peter and Demircan, Can and Eckstein, Maria K. and {\'E}ltet{\H{o}}, No{\'e}mi and Griffiths, Thomas L. and Haridi, Susanne and Jagadish, Akshay K. and Ji-An, Li and Kipnis, Alexander and Kumar, Sreejan and Ludwig, Tobias and Mathony, Marvin and Mattar, Marcelo and Modirshanechi, Alireza and Nath, Surabhi S. and Peterson, Joshua C. and Rmus, Milena and Russek, Evan M. and Saanum, Tankred and Schubert, Johannes A. and Schulze Buschoff, Luca M. and Singhi, Nishad and Sui, Xin and Thalmann, Mirko and Theis, Fabian J. and Truong, Vuong and Udandarao, Vishaal and Voudouris, Konstantinos and Wilson, Robert and Witte, Kristin and Wu, Shuchen and Wulff, Dirk U. and Xiong, Huadong and Schulz, Eric},
+  title = {A foundation model to predict and capture human cognition},
+  journal = {Nature},
+  year = {2025},
+  volume = {644},
+  number = {8078},
+  pages = {1002--1009},
+  doi = {10.1038/s41586-025-09215-4},
+  keywords = {dossier: impact; grade: B; Centaur; Psych-101}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/32918861/ (checked 2026-11-27; the abstract only was read)
+@article{schrimpf2020integrative,
+  author = {Schrimpf, Martin and Kubilius, Jonas and Lee, Michael J. and Ratan Murty, N. Apurva and Ajemian, Robert and DiCarlo, James J.},
+  title = {Integrative Benchmarking to Advance Neurally Mechanistic Models of Human Intelligence},
+  journal = {Neuron},
+  year = {2020},
+  volume = {108},
+  number = {3},
+  pages = {413--423},
+  doi = {10.1016/j.neuron.2020.07.040},
+  keywords = {dossier: impact; grade: B; Brain-Score}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/31285616/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC8312478 (checked 2026-11-27)
+@article{king2019functional,
+  author = {King, Maedbh and Hernandez-Castillo, Carlos R. and Poldrack, Russell A. and Ivry, Richard B. and Diedrichsen, J{\"o}rn},
+  title = {Functional boundaries in the human cerebellum revealed by a multi-domain task battery},
+  journal = {Nature Neuroscience},
+  year = {2019},
+  volume = {22},
+  number = {8},
+  pages = {1371--1378},
+  doi = {10.1038/s41593-019-0436-x},
+  keywords = {dossier: impact; grade: B; MDTB; MultiTaskBattery}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/34916659/ (checked 2026-11-27; the abstract only was read)
+@article{allen2022nsd,
+  author = {Allen, Emily J. and St-Yves, Ghislain and Wu, Yihan and Breedlove, Jesse L. and Prince, Jacob S. and Dowdle, Logan T. and Nau, Matthias and Caron, Brad and Pestilli, Franco and Charest, Ian and Hutchinson, J. Benjamin and Naselaris, Thomas and Kay, Kendrick},
+  title = {A massive {7T} {fMRI} dataset to bridge cognitive neuroscience and artificial intelligence},
+  journal = {Nature Neuroscience},
+  year = {2022},
+  volume = {25},
+  number = {1},
+  pages = {116--126},
+  doi = {10.1038/s41593-021-00962-x},
+  keywords = {dossier: impact; grade: C; Natural Scenes Dataset}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/29893753/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC5996851 (checked 2026-11-27)
+@article{pinho2018ibc,
+  author = {Pinho, Ana Lu{\'\i}sa and Amadon, Alexis and Ruest, Torsten and Fabre, Murielle and Dohmatob, Elvis and Denghien, Isabelle and Ginisty, Chantal and Becuwe-Desmidt, S{\'e}verine and Roger, S{\'e}verine and Laurier, Laurence and Joly-Testault, V{\'e}ronique and M{\'e}diouni-Cloarec, Ga{\"e}lle and Doubl{\'e}, Christine and Martins, Bernadette and Pinel, Philippe and Eger, Evelyn and Varoquaux, Ga{\"e}l and Pallier, Christophe and Dehaene, Stanislas and Hertz-Pannier, Lucie and Thirion, Bertrand},
+  title = {Individual Brain Charting, a high-resolution {fMRI} dataset for cognitive mapping},
+  journal = {Scientific Data},
+  year = {2018},
+  volume = {5},
+  pages = {180105},
+  doi = {10.1038/sdata.2018.105},
+  keywords = {dossier: impact; grade: C; IBC}
+}
+
+% https://news.stanford.edu/stories/2026/11/stanford-digital-brain-project
+% UNVERIFIED: exact title; the page did not open on 2026-11-27. What the dossier says of this project comes from
+% N. Mesa, "New Stanford initiative aims to build digital twin of human brain", The Transmitter, 2 Nov 2026.
+@misc{stanford2026dbp,
+  author = {{Stanford University}},
+  title = {Stanford Digital Brain Project},
+  year = {2026},
+  howpublished = {\url{https://news.stanford.edu/stories/2026/11/stanford-digital-brain-project}},
+  keywords = {dossier: impact; grade: C; naming}
+}
+
+% --- Data standards and provenance ---
+
+% https://pubmed.ncbi.nlm.nih.gov/29917016/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC6007085 (checked 2026-11-27)
+@article{niso2018megbids,
+  author = {Niso, Guiomar and Gorgolewski, Krzysztof J. and Bock, Elizabeth and Brooks, Teon L. and Flandin, Guillaume and Gramfort, Alexandre and Henson, Richard N. and Jas, Mainak and Litvak, Vladimir and Moreau, Jeremy T. and Oostenveld, Robert and Schoffelen, Jan-Mathijs and Tadel, Francois and Wexler, Joseph and Baillet, Sylvain},
+  title = {{MEG-BIDS}, the brain imaging data structure extended to magnetoencephalography},
+  journal = {Scientific Data},
+  year = {2018},
+  volume = {5},
+  pages = {180110},
+  doi = {10.1038/sdata.2018.110},
+  keywords = {dossier: data; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/31239435/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC6592877 (checked 2026-11-27)
+@article{pernet2019eegbids,
+  author = {Pernet, Cyril R. and Appelhoff, Stefan and Gorgolewski, Krzysztof J. and Flandin, Guillaume and Phillips, Christophe and Delorme, Arnaud and Oostenveld, Robert},
+  title = {{EEG-BIDS}, an extension to the brain imaging data structure for electroencephalography},
+  journal = {Scientific Data},
+  year = {2019},
+  volume = {6},
+  pages = {103},
+  doi = {10.1038/s41597-019-0104-8},
+  number = {1},
+  keywords = {dossier: data; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/31239438/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC6592874 (checked 2026-11-27)
+@article{holdgraf2019ieegbids,
+  author = {Holdgraf, Christopher and Appelhoff, Stefan and Bickel, Stephan and Bouchard, Kristofer and D'Ambrosio, Sasha and David, Olivier and Devinsky, Orrin and Dichter, Benjamin and Flinker, Adeen and Foster, Brett L. and Gorgolewski, Krzysztof J. and Groen, Iris and Groppe, David and Gunduz, Aysegul and Hamilton, Liberty and Honey, Christopher J. and Jas, Mainak and Knight, Robert and Lachaux, Jean-Philippe and Lau, Jonathan C. and Lee-Messer, Christopher and Lundstrom, Brian N. and Miller, Kai J. and Ojemann, Jeffrey G. and Oostenveld, Robert and Petridou, Natalia and Piantoni, Gio and Pigorini, Andrea and Pouratian, Nader and Ramsey, Nick F. and Stolk, Arjen and Swann, Nicole C. and Tadel, Fran{\c{c}}ois and Voytek, Bradley and Wandell, Brian A. and Winawer, Jonathan and Whitaker, Kirstie and Zehl, Lyuba and Hermes, Dora},
+  title = {{iEEG-BIDS}, extending the Brain Imaging Data Structure specification to human intracranial electrophysiology},
+  journal = {Scientific Data},
+  year = {2019},
+  volume = {6},
+  pages = {102},
+  doi = {10.1038/s41597-019-0105-7},
+  number = {1},
+  keywords = {dossier: data; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/39870674/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC11772744 (checked 2026-11-27)
+@article{luke2025nirsbids,
+  author = {Luke, Robert and Oostenveld, Robert and Cockx, Helena and Niso, Guiomar and Shader, Maureen J. and Orihuela-Espina, Felipe and Innes-Brown, Hamish and Tucker, Stephen and Boas, David and Y{\"u}cel, Meryem A. and Gau, Remi and Salo, Taylor and Appelhoff, Stefan and Markiewicz, Christopher J. and McAlpine, David and {{BIDS Maintainers}} and Pollonini, Luca},
+  title = {{NIRS-BIDS}: Brain Imaging Data Structure Extended to Near-Infrared Spectroscopy},
+  journal = {Scientific Data},
+  year = {2025},
+  volume = {12},
+  pages = {159},
+  doi = {10.1038/s41597-024-04136-9},
+  number = {1},
+  keywords = {dossier: data; grade: B; fNIRS}
+}
+
+% https://www.biorxiv.org/content/10.64898/2026.02.03.703514.full.pdf (authors as extracted from the PDF on 2026-11-27)
+@misc{szinte2026eyetracking,
+  author = {Szinte, Martin and Bach, Dominik R. and Draschkow, Dejan and Esteban, Oscar and Gagl, Benjamin and Gau, R{\'e}mi and Gregorova, Klara and Halchenko, Yaroslav O. and Huberty, Scott and Kling, Sina M. and Kulkarni, Sourav and Markiewicz, Christopher J. and Mikkelsen, Mark and Oostenveld, Robert and Pfarr, Julia-Katharina},
+  title = {{Eye-Tracking-BIDS}: the Brain Imaging Data Structure extended to gaze position and pupil data},
+  year = {2026},
+  howpublished = {bioRxiv},
+  doi = {10.64898/2026.02.03.703514},
+  keywords = {dossier: data; grade: B; BEP020; BEP20; eye tracking}
+}
+
+% https://joss.theoj.org/papers/10.21105/joss.03262 (checked 2026-11-27; published 1 July 2021)
+@article{halchenko2021datalad,
+  author = {Halchenko, Yaroslav O. and Meyer, Kyle and Poldrack, Benjamin and Solanky, Debanjum Singh and Wagner, Adina S. and Gors, Jason and MacFarlane, Dave and Pustina, Dorian and Sochat, Vanessa and Ghosh, Satrajit S. and M{\"o}nch, Christian and Markiewicz, Christopher J. and Waite, Laura and Shlyakhter, Ilya and de la Vega, Alejandro and Hayashi, Soichi and H{\"a}usler, Christian Olaf and Poline, Jean-Baptiste and Kadelka, Tobias and Skyt{\'e}n, Kusti and Jarecka, Dorota and Kennedy, David and Strauss, Ted and Cieslak, Matt and Vavra, Peter and Ioanas, Horea-Ioan and Schneider, Robin and Pfl{\"u}ger, Mika and Haxby, James V. and Eickhoff, Simon B. and Hanke, Michael},
+  title = {{DataLad}: distributed system for joint management of code, data, and their relationship},
+  journal = {Journal of Open Source Software},
+  year = {2021},
+  volume = {6},
+  number = {63},
+  pages = {3262},
+  doi = {10.21105/joss.03262},
+  keywords = {dossier: data; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/34970709/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC9546996 (checked 2026-11-27)
+% Online 30 Dec 2021, issue of April 2022 (key robbins2021hed in earlier files).
+@article{robbins2022hed,
+  author = {Robbins, Kay and Truong, Dung and Jones, Alexander and Callanan, Ian and Makeig, Scott},
+  title = {Building {FAIR} functionality: Annotating events in time series data using {Hierarchical Event Descriptors (HED)}},
+  journal = {Neuroinformatics},
+  year = {2022},
+  doi = {10.1007/s12021-021-09537-4},
+  volume = {20},
+  number = {2},
+  pages = {463--481},
+  keywords = {dossier: data; grade: B; HED}
+}
+
+% --- AI-assisted development ---
+
+% https://arxiv.org/abs/2602.11988 (version 3 of 29 Sep 2026; checked 2026-11-27)
+% Not a main-conference paper: https://iclr.cc/virtual/2026/10021235 and /10018749 list it as an oral at the ICLR 2026
+% workshop MemAgents and a poster at the ICLR 2026 workshop on AI with Recursive Self-Improvement.
+% The benchmark is named AGENTbench in version 1 and CTXbench in version 3; cite version 3.
+@misc{gloaguen2026agentsmd,
+  author = {Gloaguen, Thibaud and M{\"u}ndler-Sasahara, Niels and M{\"u}ller, Mark Niklas and Raychev, Veselin and Vechev, Martin},
+  title = {Evaluating {AGENTS.md}: Are Repository-Level Context Files Helpful for Coding Agents?},
+  year = {2026},
+  eprint = {2602.11988},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.SE},
+  doi = {10.48550/arXiv.2602.11988},
+  note = {Version 3, 29 September 2026},
+  keywords = {dossier: development; grade: A}
+}
+
+% https://arxiv.org/abs/2601.20404 (venue as printed on the PDF: "Proceedings of Journal Ahead Workshop (JAWs) 2026
+% (ICSE JAWs 2026)", Rio de Janeiro, 12-18 April 2026; checked 2026-11-27)
+@inproceedings{lulla2026agentsmd,
+  author = {Lulla, Jai Lal and Mohsenimofidi, Seyedmoein and Galster, Matthias and Zhang, Jie M. and Baltes, Sebastian and Treude, Christoph},
+  title = {On the Impact of {AGENTS.md} Files on the Efficiency of {AI} Coding Agents},
+  booktitle = {ICSE Journal-Ahead Workshop (JAWs)},
+  year = {2026},
+  eprint = {2601.20404},
+  archivePrefix = {arXiv},
+  doi = {10.48550/arXiv.2601.20404},
+  keywords = {dossier: development; grade: B}
+}
+
+% https://arxiv.org/abs/2510.22254 (authors as printed on the PDF; checked 2026-11-27)
+% Superseded by bridgeford2026twelve, the published version: cite that one.
+@misc{bridgeford2025tenrules,
+  author = {Bridgeford, Eric W. and Campbell, Iain and Chen, Zijiao and Lin, Zhicheng and Ritz, Harrison and Vandekerckhove, Joachim and Poldrack, Russell A.},
+  title = {Ten Simple Rules for {AI}-Assisted Coding in Science},
+  year = {2025},
+  eprint = {2510.22254},
+  archivePrefix = {arXiv},
+  keywords = {dossier: development; grade: B}
+}
+
+% https://pubmed.ncbi.nlm.nih.gov/42507624/ and https://pmc.ncbi.nlm.nih.gov/articles/PMC13405308 (checked 2026-11-27)
+@article{bridgeford2026twelve,
+  author = {Bridgeford, Eric W. and Campbell, Iain Declan and Chen, Zijiao and Lin, Zhicheng and Ritz, Harrison and Vandekerckhove, Joachim and Poldrack, Russell A.},
+  title = {Twelve quick tips for {AI}-assisted coding in science},
+  journal = {PLOS Computational Biology},
+  year = {2026},
+  doi = {10.1371/journal.pcbi.1014428},
+  volume = {22},
+  number = {7},
+  pages = {e1014428},
+  keywords = {dossier: development; grade: B}
 }
